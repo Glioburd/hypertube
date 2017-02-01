@@ -1,0 +1,27 @@
+<h1>Liste d'utilisateurs :</h1>
+
+
+<div class="container" id="tourpackages-carousel">
+	<div class="row">
+		<% @users.each do |user| %>
+			<div class="col-xs-18 col-sm-6 col-md-3">
+				<div class="thumbnail">
+					<% if user.avatar? %>
+					<% image = user.avatar %>
+					<% else %>
+					<% image = user.imageOauthUrl %>
+					<% end %>
+					<img src="<%= image %>" alt="avatar" height="142" width="142">
+					<div class="caption">
+						<h4>
+						<% if user.login? %>
+								<%= user.login %>
+							<% end %>
+						</h4>
+						<p><a href="#" class="btn btn-info btn-xs" role="button">Visit</a></p>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
