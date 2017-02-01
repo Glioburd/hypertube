@@ -1,0 +1,33 @@
+#container {
+	width: 50%;
+	margin: 0 auto;
+	text-align: center
+}
+
+.style_image {
+	width: 400px;
+	height: 280px;
+}
+
+#oauth {
+	width: 200px;
+	margin: 0 auto;
+	text-align: center
+}
+
+#login {
+	width: 200px;
+	margin: 0 auto;
+	margin-bottom: 5px;	
+	text-align: center
+}
+
+#login1 {
+	width: 200px;
+	margin: 0 auto;
+	text-align: center
+}
+
+#logout {
+	margin-top: 5px;
+}
