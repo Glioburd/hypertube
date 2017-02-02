@@ -26,7 +26,7 @@
 						<a class="nav-link" href="<%= users_path %>">Utilisateurs<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="<%= url_for(controller: 'movies', action: 'index') %>">Films</a>
+						<%= link_to movies_path, class: 'nav-link' %>
 					</li>
 					</ul>
 					<% if current_user %>
@@ -47,7 +47,7 @@
 					 <%= submit_tag 'Search', class: "btn btn-outline-success my-2 my-sm-0" %>
 				<% end %>
 
-<!-- 				<form class="form-inline my-2 my-lg-0" method="get" action="<%= url_for(controller: 'movies', action: 'index') %>">
+<!-- 				<form class="form-inline my-2 my-lg-0" method="get" action="<#%= url_for(controller: 'movies', action: 'index') %>">
 					<input class= type="text" placeholder="Chercher un film">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 				</form> -->
