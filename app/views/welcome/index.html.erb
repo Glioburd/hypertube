@@ -6,18 +6,20 @@
 <% i.movies.each do |movie| %>
   <% id = movie.id %>
   <% allmovie = Imdb::Movie.new(id)%>
-  <%= allmovie.title %>
-  <%= allmovie.cast_members %>
-  <%= allmovie.director %>
-  <%= allmovie.trailer_url %>
-  <%= allmovie.genres %>
-  <%= allmovie.languages %>
-  <%= allmovie.countries %>
-  <%= allmovie.company %>
-  <%= allmovie.plot %>
-  <%= allmovie.rating %>
-  <%= allmovie.votes %>
   <img src="<%= allmovie.poster %>" width="250" height="400">
+  <strong>Titre : </strong><p><%= allmovie.title %></p>
+  <strong>Casting : </strong><p><%= allmovie.cast_members %></p>
+  <strong>Director : </strong><p><%= allmovie.director %></p>
+  <strong>Trailer url : </strong><p><%= allmovie.trailer_url %></p>
+  <strong>Genre : </strong><p><%= allmovie.genres %></p>
+  <strong>Langues : </strong><p><%= allmovie.languages %></p>
+  <strong>Pays : </strong><p><%= allmovie.countries %></p>
+  <strong>Company : </strong><p><%= allmovie.company %></p>
+  <strong>Sinopsys : </strong><p><%= allmovie.plot %></p>
+  <strong>Notes : </strong><p><%= allmovie.rating %></p>
+  <strong>Votes : </strong><p><%= allmovie.votes %></p>
+  <strong>Tagline : </strong><p><%= allmovie.tagline %></p>
+  <strong>Durée : </strong><p><%= allmovie.length %></p>
   <br />
   <br />
 <% end %>
