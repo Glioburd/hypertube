@@ -2,27 +2,7 @@
 <h1>Hyper Tube !</h1>
 
 <% if user_signed_in? %>
-<% i = Imdb::Search.new("La grande vadrouille") %>
-<% i.movies.each do |movie| %>
-  <% id = movie.id %>
-  <% allmovie = Imdb::Movie.new(id)%>
-  <img src="<%= allmovie.poster %>" width="250" height="400">
-  <strong>Titre : </strong><p><%= allmovie.title %></p>
-  <strong>Casting : </strong><p><%= allmovie.cast_members %></p>
-  <strong>Director : </strong><p><%= allmovie.director %></p>
-  <strong>Trailer url : </strong><p><%= allmovie.trailer_url %></p>
-  <strong>Genre : </strong><p><%= allmovie.genres %></p>
-  <strong>Langues : </strong><p><%= allmovie.languages %></p>
-  <strong>Pays : </strong><p><%= allmovie.countries %></p>
-  <strong>Company : </strong><p><%= allmovie.company %></p>
-  <strong>Sinopsys : </strong><p><%= allmovie.plot %></p>
-  <strong>Notes : </strong><p><%= allmovie.rating %></p>
-  <strong>Votes : </strong><p><%= allmovie.votes %></p>
-  <strong>Tagline : </strong><p><%= allmovie.tagline %></p>
-  <strong>Durée : </strong><p><%= allmovie.length %></p>
-  <br />
-  <br />
-<% end %>
+
   Logged in as <strong><%= current_user.email %></strong>.
   <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
   <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>

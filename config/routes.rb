@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   root to: "welcome#index"
   get '/users', to: 'users#index', as: 'users'
   get '/users/:login', to: 'users#show', as: 'userprofil'
+  get '/movies', to: 'movies#index', as: 'movies'
 
 end
