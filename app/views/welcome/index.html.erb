@@ -2,25 +2,7 @@
 <h1>Hyper Tube !</h1>
 
 <% if user_signed_in? %>
-<% i = Imdb::Search.new("La grande vadrouille") %>
-<% i.movies.each do |movie| %>
-  <% id = movie.id %>
-  <% allmovie = Imdb::Movie.new(id)%>
-  <%= allmovie.title %>
-  <%= allmovie.cast_members %>
-  <%= allmovie.director %>
-  <%= allmovie.trailer_url %>
-  <%= allmovie.genres %>
-  <%= allmovie.languages %>
-  <%= allmovie.countries %>
-  <%= allmovie.company %>
-  <%= allmovie.plot %>
-  <%= allmovie.rating %>
-  <%= allmovie.votes %>
-  <img src="<%= allmovie.poster %>" width="250" height="400">
-  <br />
-  <br />
-<% end %>
+
   Logged in as <strong><%= current_user.email %></strong>.
   <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
   <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>

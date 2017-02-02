@@ -1,0 +1,23 @@
+<% query = params[:term] %><br>
+
+<% i = Imdb::Search.new(query) %>
+<% i.movies.each do |movie| %>
+	
+	<% id = movie.id %>
+	<% allmovie = Imdb::Movie.new(id)%>
+	<p><img src="<%= allmovie.poster %>" width="250" height="400"></p>
+	<strong>id imdb : </strong><p><%=  allmovie.id %></p>
+	<strong>Connu aussi sous : </strong><p><%= allmovie.also_known_as %></p>
+	<strong>Titre : </strong><p><%= allmovie.title %></p>
+	<strong>Casting : </strong><p><%= allmovie.cast_members %></p>
+	<strong>Director : </strong><p><%= allmovie.director %></p>
+	<strong>Trailer url : </strong><p><%= allmovie.trailer_url %></p>
+	<strong>Genre : </strong><p><%= allmovie.genres %></p>
+	<strong>Langues : </strong><p><%= allmovie.languages %></p>
+	<strong>Pays : </strong><p><%= allmovie.countries %></p>
+	<strong>Company : </strong><p><%= allmovie.company %></p>
+	<strong>Sinopsys : </strong><p><%= allmovie.plot %></p>
+	<strong>Notes : </strong><p><%= allmovie.rating %></p>
+	<strong>Votes : </strong><p><%= allmovie.votes %></p>
+
+<% end %>
