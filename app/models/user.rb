@@ -26,10 +26,24 @@ class User < ApplicationRecord
       user.imageOauthUrl = auth.info.image.gsub("_normal", "")
       user.firstname = auth.info.name
     end
-    if auth.provider == 'facebook' || auth.provider == 'marvin'
+    if auth.provider == 'marvin'
+      puts("|||||||||||||||||||||||||||||||||||||||||||||||||")
+      auth.info do |t|
+        puts(t)
+      end
+      puts("|||||||||||||||||||||||||||||||||||||||||||||||||")
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.name = auth.info.name
+      user.login = auth.info.nickname
+      user.imageOauthUrl = auth.info.image + "?width=600"
+      user.firstname = auth.info.name
+    end
+    if auth.provider == 'facebook'
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
       user.name = auth.info.last_name
+      user.login = auth.info.first_name
       user.imageOauthUrl = auth.info.image + "?width=600"
       user.firstname = auth.info.first_name
     end
