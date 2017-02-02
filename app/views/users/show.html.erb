@@ -1,0 +1,38 @@
+<% content_for :title, @user.login %>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Login:</h3>
+	</div>
+	<div class="panel-body">
+		<%= @user.login %>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Name:</h3>
+	</div>
+	<div class="panel-body">
+		<%= @user.firstname %> <%= @user.name %>
+	</div>
+</div>
+
+
+<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Photo de profil :</h3>
+		</div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-6 col-md-offset-3">
+					<% if @user.avatar? %>
+						<img src="<%= @user.avatar %>" alt="avatar">
+					<% else %>
+						<img src="<%= @user.imageOauthUrl %>" alt="avatar_Oauth">
+					<% end %>
+					</a>
+				</div>
+			</div>
+	</div>
+</div>
