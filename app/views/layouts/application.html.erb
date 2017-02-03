@@ -19,17 +19,16 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<a class="navbar-brand" href="<%= root_path %>">Hypertube</a>
-
+			<% if current_user %>
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
 						<a class="nav-link" href="<%= users_path %>">Utilisateurs<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<%= link_to movies_path, class: 'nav-link' %>
+						<%= link_to "Movies", movies_path, class: 'nav-link' %>
 					</li>
 					</ul>
-					<% if current_user %>
 						<ul class="navbar-nav pull-right">
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_user.login %></a>
@@ -40,13 +39,11 @@
 								</div>
 							</li>
 						</ul>
-					<% end %>
-
 				<%= form_tag(movies_path, method: :get, class: "form-inline my-2 my-lg-0") do %>
 					<%= text_field_tag :term, nil, class: "form-control mr-sm-2" %>
-					 <%= submit_tag 'Search', class: "btn btn-outline-success my-2 my-sm-0" %>
+					<%= submit_tag 'Search', class: "btn btn-outline-success my-2 my-sm-0" %>
 				<% end %>
-
+			<% end %>
 <!-- 				<form class="form-inline my-2 my-lg-0" method="get" action="<#%= url_for(controller: 'movies', action: 'index') %>">
 					<input class= type="text" placeholder="Chercher un film">
 					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
