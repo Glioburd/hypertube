@@ -26,7 +26,7 @@ class User < ApplicationRecord
     clean_up_passwords
     result
   end
-  
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
@@ -48,7 +48,6 @@ class User < ApplicationRecord
           user.email = auth.info.nickname + "@twitter.com"
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.name
-          user.login = auth.info.nickname
           user.imageOauthUrl = auth.info.image.gsub("_normal", "")
           user.firstname = auth.info.name
         end
@@ -56,7 +55,6 @@ class User < ApplicationRecord
           user.email = auth.info.email
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.name
-          user.login = auth.info.nickname
           user.imageOauthUrl = auth.info.image + "?width=600"
           user.firstname = auth.info.name
         end
@@ -64,7 +62,6 @@ class User < ApplicationRecord
           user.email = auth.info.email
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.last_name
-          user.login = auth.info.first_name
           user.imageOauthUrl = auth.info.image + "?width=600"
           user.firstname = auth.info.first_name
         end
