@@ -1,3 +1,10 @@
 
 fr:
   hello: "Bonjour"
+  signup: "Inscription "
+  login: "Connexion "
+  signin: "Connexion avec "
+  langueEn: "Anglais"
+  langueFr: "Français"
+  firstname: "Prénom"
+  lastname: "Nom"

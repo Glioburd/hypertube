@@ -1,8 +1,9 @@
 <div id="container">
-<%= link_to_unless_current "English", locale: "en" %> |
-<%= link_to_unless_current "French", locale: "fr" %>
+<%= link_to_unless I18n.locale == :en, t('langueEn'), locale: :en %>
+|
+<%= link_to_unless I18n.locale == :fr, t('langueFr'), locale: :fr %>
+</p>
 <h1>Hyper Tube !</h1>
-<%= t :hello %>
 <% if user_signed_in? %>
   Logged in as <strong><%= current_user.email %></strong>.
   <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
@@ -10,10 +11,10 @@
 <% else %>
   <div id="login">
     <a href="<%= new_user_registration_path %>">
-      <button id="login" type="button" class="btn btn-success">Sign up</button>
+      <button id="login" type="button" class="btn btn-success"><%= t :signup %></button>
     </a>
     <a href="<%= new_user_session_path %>">
-     <button id="login1" type="button" class="btn btn-warning">Login</button>
+     <button id="login1" type="button" class="btn btn-warning"><%= t :login %></button>
     </a>
   </div>
 <% end %>
@@ -28,13 +29,13 @@
 <div id="oauth">
 <% unless current_user %>
   <a class="btn btn-block btn-social btn-facebook" href="<%= user_facebook_omniauth_authorize_path %>">
-    <span class="fa fa-facebook"></span> Sign in with Facebook
+    <span class="fa fa-facebook"></span> <%= t :signin %> Facebook
   </a>
   <a class="btn btn-block btn-social btn-github" href="<%= user_marvin_omniauth_authorize_path %>">
-    <span><img src=<%= image_url('42logo.svg') %>/ style="width: 80%; height: 80%"></span> Sign in with 42
+    <span><img src=<%= image_url('42logo.svg') %>/ style="width: 80%; height: 80%"></span> <%= t :signin %> 42
   </a>
   <a class="btn btn-block btn-social btn-twitter" href="<%= user_twitter_omniauth_authorize_path %>">
-    <span class="fa fa-twitter"></span> Sign in with Twitter
+    <span class="fa fa-twitter"></span> <%= t :signin %> Twitter
   </a>
 <% else %>
   <%= link_to "Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger', :id => 'logout'%>

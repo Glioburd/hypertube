@@ -20,4 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  hello: "Hello"
+  signup: "Sign up "
+  login: "Login "
+  signin: "Sign in with "
+  langueEn: "English"
+  langueFr: "French"
+  firstname: "Firstname"
+  lastname: "Lastname"
