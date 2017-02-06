@@ -1,6 +1,7 @@
 <% if current_user %>
 	<% query = params[:term] %><br>
 	<% if query != nil %>
+		<%= !query.empty? %>
 		<% response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + query + '&sort_by=title&order_by=asc') %>
 		<% json = response.body %>
 		<% result = JSON.parse(json) %>
@@ -13,32 +14,27 @@
 
 					<% end %>
 					<% if  data[0] == 'movies' %>
-						<% data[1].each do |info| %>
-							<!-- <%= info %> -->
-							<p><img src="<%= info['medium_cover_image'] %>" width="250" height="400"></p>
-							<strong>id yts : </strong><p><%=  info['id'] %></p>
-							<strong>Titre : </strong><p><%= info['title'] %></p>
-							<strong>Année : </strong><p><%= info['year'] %></p>
-							<% genre = info['genres'].to_s %>
+						<% data[1].each do |movie| %>
+							<!-- <%= movie %> -->
+							<p><img src="<%= movie['medium_cover_image'] %>" width="250" height="400"></p>
+							<strong>id yts : </strong><p><%=  movie['id'] %></p>
+							<strong>Titre : </strong><p><%= movie['title'] %></p>
+							<strong>Année : </strong><p><%= movie['year'] %></p>
+							<% genre = movie['genres'].to_s %>
 							<% genre = genre.gsub('[', '') %>
 							<% genre = genre.gsub(']', '') %>
 							<% genre = genre.gsub('"', '') %>
 							<strong>Genre : </strong><p><%= genre %></p>
-							<strong>Sinopsys : </strong><p><%= info['description_full'] %></p>
-							<strong>Notes : </strong><p><%= info['rating'] %></p>
-							<strong>Langue: </strong><p><%= info['language'] %></p>
+							<strong>Sinopsys : </strong><p><%= movie['description_full'] %></p>
+							<strong>Notes : </strong><p><%= movie['rating'] %></p>
+							<strong>Langue: </strong><p><%= movie['language'] %></p>
 						<% end %>
 					<% end %>
 				<% end %>
 			<% end %>
 		<% end %>
 		<% else %>
-			<%# response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating=8.2&sort_by=seeds&order_by=desc&limit=50&page=3') %>
-			<%# json = response.body %>
-			<%# result = JSON.parse(json) %>
-			
-			<% if @result['status'] == 'ok' %>
-			<% if @result['status_message'] == 'Query was successful' %>
+			<% if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful' %>
 				<% @result['data'].each do |data| %>
 					<% if data[0] == 'movie_count' && data[1] == 0 %>
 							<strong>No results</strong>
@@ -47,19 +43,16 @@
 					<% i = 0 %>
 
 					<% if  data[0] == 'movies' %>
-						<% data[1].each do |info| %>
-							<!-- <%= info %> -->
-
-							<% i+= 1 %>
-							<%= 'Count : ' + i.to_s %>
-
-							<p><img src="<%= info['medium_cover_image'] %>" width="250" height="400"></p>
-							<p><%= info['title'] + ' (' + info['year'].to_s + ')' %></p>
+						<%= 'CURRENT PAGE : ' + @current_page %>
+						<%= render partial: 'movie', collection: @movies %>
+						<% unless @current_page.to_i >= @total_pages %>
+							<p id="view-more">
+								<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>
+							</p>
 						<% end %>
 					<% end %>
 				<% end %>
 			<% end %>
-		<% end %>
 	<% end %>
 <% else %>
 
