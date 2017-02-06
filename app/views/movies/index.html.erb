@@ -37,14 +37,16 @@
 			<% if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful' %>
 				<% @result['data'].each do |data| %>
 					<% if data[0] == 'movie_count' && data[1] == 0 %>
-							<strong>No results</strong>
+							<<%= submit_tag "Save changes", :id => "submit", :name => "submit", :class => "form_submit", :disabled => false, :disable_with => "Please wait..." %>rong>No results</strong>
 					<% end %>
 
 					<% i = 0 %>
 
 					<% if  data[0] == 'movies' %>
 						<%= 'CURRENT PAGE : ' + @current_page %>
-						<%= render partial: 'movie', collection: @movies %>
+						<div id="content">
+							<%= render partial: 'movie', collection: @movies %>
+						</div>
 						<% unless @current_page.to_i >= @total_pages %>
 							<p id="view-more">
 								<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>

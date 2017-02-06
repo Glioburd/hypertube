@@ -1,6 +1,6 @@
-$('#content').append("<%= render(partial: 'movie', collection: @movies, format: 'html') %>");
-<% if @current_page == @total_pages %>
+$('#content').append("<%= j render(partial: 'movie', collection: @movies, format: 'html') %>");
+<% if @current_page.to_i == @total_pages %>
 	$('#view-more').remove();
 <% else %>
-	$('#view-more a').attr('href', '<%= link_to("Load more", movies, page: @current_page + 1) %>');
+	$('#view-more a').attr('href', '<%= url_for(page: @current_page.to_i + 1) %>');
 <% end %>
