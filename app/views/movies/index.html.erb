@@ -44,7 +44,7 @@
 
 					<% if  data[0] == 'movies' %>
 						<%= 'CURRENT PAGE : ' + @current_page %>
-						<div id="content">
+						<div id="content" class="container">
 							<%= render partial: 'movie', collection: @movies %>
 						</div>
 						<% unless @current_page.to_i >= @total_pages %>

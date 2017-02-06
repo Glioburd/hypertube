@@ -1,2 +1,10 @@
-<p><img src="<%= movie['medium_cover_image'] %>" width="250" height="400"></p>
-<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' %></p>
+<div class="row">
+	<div class="col-xs-6 col-md-3">
+		<a href="#" class="thumbnail">
+			<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
+		</a>
+		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' %></p>
+	</div>
+</div>
+
+<!-- 250 / 400 -->
