@@ -55,6 +55,8 @@ class User < ApplicationRecord
           user.email = auth.info.nickname + "@twitter.com"
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.name
+          o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+          user.login = (0...15).map { o[rand(o.length)] }.join
           user.imageOauthUrl = auth.info.image.gsub("_normal", "")
           user.firstname = auth.info.name
         end
@@ -62,6 +64,8 @@ class User < ApplicationRecord
           user.email = auth.info.email
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.name
+          o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+          user.login = (0...15).map { o[rand(o.length)] }.join
           user.imageOauthUrl = auth.info.image + "?width=600"
           user.firstname = auth.info.name
         end
@@ -69,6 +73,8 @@ class User < ApplicationRecord
           user.email = auth.info.email
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.last_name
+          o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
+          user.login = (0...15).map { o[rand(o.length)] }.join
           user.imageOauthUrl = auth.info.image + "?width=600"
           user.firstname = auth.info.first_name
         end
