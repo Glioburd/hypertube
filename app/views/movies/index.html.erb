@@ -44,9 +44,13 @@
 
 					<% if  data[0] == 'movies' %>
 						<%= 'CURRENT PAGE : ' + @current_page %>
-						<div id="content" class="container">
-							<%= render partial: 'movie', collection: @movies %>
+
+						<div class="container">
+							<div class="row" id="content">
+								<%= render partial: 'movie', collection: @movies %>
+							</div>
 						</div>
+
 						<% unless @current_page.to_i >= @total_pages %>
 							<p id="view-more">
 								<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>

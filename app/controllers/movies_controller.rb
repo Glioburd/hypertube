@@ -11,7 +11,7 @@ before_action :set_current_page
 			sort_by = 'seeds'
 			with_images = 'true'
 			order_by = 'desc'
-			limit = '50'
+			limit = '20'
 			current_page = @current_page
 			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
 			json = response.body
@@ -23,7 +23,7 @@ before_action :set_current_page
 			# @result['data']['movies'].each do |info|
 			# 	puts info
 			# end
-			
+
 			@movies_count = @result['data']['movie_count']
 			puts 'Movie count : ' + @movies_count.to_s
 			@limit = @result['data']['limit']
