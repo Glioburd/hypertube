@@ -5,6 +5,13 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:marvin, :facebook, :twitter]
   mount_uploader :avatar, AvatarUploader
   validates_uniqueness_of :login
+  validate :password_complexity
+
+  def password_complexity
+    if password.present? and not password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)./)
+      errors.add :password, "must include at least one lowercase letter, one uppercase letter, and one digit"
+    end
+  end
 
   def update_with_password(params, *options)
     current_password = params.delete(:current_password)
