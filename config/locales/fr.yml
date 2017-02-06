@@ -8,3 +8,7 @@ fr:
   langueFr: "Français"
   firstname: "Prénom"
   lastname: "Nom"
+  editprofil: "Modifier profil"
+  logout: "Déconnexion"
+  loggedin: "Connecté en tant que "
+  rememberme: "Ce souvenir de moi "

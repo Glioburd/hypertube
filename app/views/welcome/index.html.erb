@@ -5,9 +5,9 @@
 </p>
 <h1>Hyper Tube !</h1>
 <% if user_signed_in? %>
-  Logged in as <strong><%= current_user.email %></strong>.
-  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-  <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+  <%= t('loggedin') %><strong><%= current_user.email %></strong>.
+  <%= link_to t('editprofil'), edit_user_registration_path, :class => 'navbar-link' %> |
+  <%= link_to t('logout'), destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
 <% else %>
   <div id="login">
     <a href="<%= new_user_registration_path %>">
@@ -38,6 +38,6 @@
     <span class="fa fa-twitter"></span> <%= t :signin %> Twitter
   </a>
 <% else %>
-  <%= link_to "Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger', :id => 'logout'%>
+  <%= link_to t('logout').html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger', :id => 'logout'%>
 <% end %>
 </div>

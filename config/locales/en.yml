@@ -28,3 +28,7 @@ en:
   langueFr: "French"
   firstname: "Firstname"
   lastname: "Lastname"
+  editprofil: "Edit profil"
+  logout: "Logout"
+  loggedin: "Logged in as "
+  rememberme: "Remember me"
