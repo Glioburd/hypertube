@@ -16,6 +16,11 @@ gem 'omniauth-twitter'
 gem 'imdb'
 gem 'httparty'
 gem 'json'
+
+gem 'firecracker'
+gem 'subdb'
+gem "mediaelement_rails"
+
 gem 'will_paginate', '~> 3.0.7'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.1'

@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController	
-
-before_action :set_current_page
+	require 'pirate_bay/base.rb'
+	before_action :set_current_page
 
 	def index
 		term = params[:term]
@@ -50,7 +50,59 @@ before_action :set_current_page
 		 # @movies = Post.paginate(:current_page => params[:current_page], :per_current_page => 20)
 	end
 
+	# POST /video/new
+	def new
+		# PIRATE BAY
+		pirate_bays_searchs = PirateBay::Search.new(params[:search][:film]).execute.to_json
+		searchs = JSON.parse(pirate_bays_searchs)
+		if searchs[0]
+		  check = 0
+		  response = ""
+		  searchs.each do |torrent|
+		    if torrent['seeds'] < 10
+		      break
+		    end
+		    response = RestClient.get("http://localhost:3001/download?magnet=#{torrent['magnet_link']}")
+		    if JSON.parse(response.body)['ok'] != 0
+		      check = 1
+		      break
+		    end
+		  end
+		  if check == 1
+		    path = JSON.parse(response.body)['path']
+		    video = Video.create(title: params[:search][:film], description: 'Pirate_bay recherche', form: 'mp4', path: path)
+		    redirect_to movie_path(id: video.id)
+		  else
+		    redirect_to root_path
+		  end
+		else
+		  redirect_to root_path
+		end
+	end
+
 	def show
+		@video = Video.find(params[:id])
+	    if @video
+	      if @video.translates.empty?
+	        path = @video.path[1..-1]
+	        file = Subdb::Video.new("public/" + path)
+	        file_in_folder = path.split('/')[-1].split('.')[0]
+	        trads = file.search
+	        if trads
+	          trads = trads.split(',')
+	          trads.each do |trad|
+	            text = file.download([trad])
+	            File.open(File.join("public/trads/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
+	              f.write(text.force_encoding("UTF-8"))
+	              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, video: @video)
+	            end
+	          end
+	        end
+	      end
+	      @translates = @video.translates
+	    else
+	      redirect_to root_path
+	    end
 	end
 	
 	private
