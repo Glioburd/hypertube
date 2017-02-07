@@ -21,8 +21,6 @@ module PirateBay
       open(url, { "User-Agent" => "libcurl-agent/1.0" }).read
     end
 
-    private
-
     def next_page(doc)
       doc.css("#searchResult tr").each_with_index do |row, index|
         next if (index == 0)

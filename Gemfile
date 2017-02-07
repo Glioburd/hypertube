@@ -17,6 +17,8 @@ gem 'imdb'
 gem 'httparty'
 gem 'json'
 
+
+gem 'imdb_party'
 gem 'firecracker'
 gem 'subdb'
 gem "mediaelement_rails"

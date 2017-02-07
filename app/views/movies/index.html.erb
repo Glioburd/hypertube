@@ -1,106 +1,49 @@
-<% if current_user %>
-	<% query = params[:term] %><br>
-	<form method="get" action="<% link_to movies_path %>">
-		<div class="select-container">
-			<p>Quality</p>
-			<select name="quality" class="custom-select">
-				<option>All</option>
-				<option value="720p">720p</option>
-				<option value="1080p">1080p</option>
-			</select>
-			<p>Rating</p>
-			<select name="rating" class="custom-select">
-				<option value="0">All</option>
-				<option value="9">9+</option>
-				<option value="8" selected>8+</option>
-				<option value="7">7+</option>
-				<option value="6">6+</option>
-				<option value="5">5+</option>
-				<option value="4">4+</option>
-				<option value="3">3+</option>
-				<option value="2">2+</option>
-				<option value="1">1+</option>
-			</select>
-			<p>Sort by</p>
-			<select name="sort_by" class="custom-select">
-				<option value="">Any</option>
-				<option value="date_added" selected>Lastest</option>
-				<option value="date_added">Oldest</option>
-				<option value="seeds">Seeds</option>
-				<option value="peers">Peers</option>
-				<option value="year">Year</option>
-				<option value="rating">Rating</option>
-				<option value="title">Title</option>
-			</select>
-			<button class="btn btn-primary">Submit</button>
-		</div>
-	</form>
-	QUALITY : <%= params[:quality] %>
-	<% if query != nil %>
-		<%= !query.empty? %>
-		<% response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + query + '&sort_by=title&order_by=asc') %>
-		<% json = response.body %>
-		<% result = JSON.parse(json) %>
-		<% if result['status'] == 'ok' %>
-			<% if result['status_message'] == 'Query was successful' %>
-				<% result['data'].each do |data| %>
-					<% if data[0] == 'movie_count' && data[1] == 0 %>
-
-							<strong>No results</strong>
-
-					<% end %>
-					<% if  data[0] == 'movies' %>
-						<% data[1].each do |movie| %>
-							<!-- <%= movie %> -->
-							<p><img src="<%= movie['medium_cover_image'] %>" width="250" height="400"></p>
-							<strong>id yts : </strong><p><%=  movie['id'] %></p>
-							<strong>Titre : </strong><p><%= movie['title'] %></p>
-							<strong>Année : </strong><p><%= movie['year'] %></p>
-							<% genre = movie['genres'].to_s %>
-							<% genre = genre.gsub('[', '') %>
-							<% genre = genre.gsub(']', '') %>
-							<% genre = genre.gsub('"', '') %>
-							<strong>Genre : </strong><p><%= genre %></p>
-							<strong>Sinopsys : </strong><p><%= movie['description_full'] %></p>
-							<strong>Notes : </strong><p><%= movie['rating'] %></p>
-							<strong>Langue: </strong><p><%= movie['language'] %></p>
-						<% end %>
-					<% end %>
-				<% end %>
-			<% end %>
-		<% end %>
-		<% else %>
-			<% if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful' %>
-				<% @result['data'].each do |data| %>
-					<% if data[0] == 'movie_count' && data[1] == 0 %>
-							<%#= submit_tag "Save changes", :id => "submit", :name => "submit", :class => "form_submit", :disabled => false, :disable_with => "Please wait..." %>
-							<strong>No results</strong>
-					<% end %>
-
-					<% if  data[0] == 'movies' %>
-
-						<div class="container">
-							<div class="row" id="content">
-								<%= render partial: 'movie', collection: @movies %>
-							</div>
-						</div>
-						<input type="hidden" id="currentPage" value="<%= @current_page %>" />
-						<input type="hidden" id="totalPages" value="<%= @total_pages %>" />
-
-						<% unless @current_page.to_i >= @total_pages %>
-							<p id="view-more">
-								<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>
-							</p>
-						<% end %>
-					<% end %>
-				<% end %>
-			<% end %>
-	<% end %>
-<% else %>
-
-REDIRECT TO LOGIN
-
+<% query = params[:term] %><br>
+<form method="get" action="<% link_to movies_path %>">
+	<div class="select-container">
+		<p>Quality</p>
+		<select name="quality" class="custom-select">
+			<option>All</option>
+			<option value="720p">720p</option>
+			<option value="1080p">1080p</option>
+		</select>
+		<p>Rating</p>
+		<select name="rating" class="custom-select">
+			<option value="0">All</option>
+			<option value="9">9+</option>
+			<option value="8" selected>8+</option>
+			<option value="7">7+</option>
+			<option value="6">6+</option>
+			<option value="5">5+</option>
+			<option value="4">4+</option>
+			<option value="3">3+</option>
+			<option value="2">2+</option>
+			<option value="1">1+</option>
+		</select>
+		<p>Sort by</p>
+		<select name="sort_by" class="custom-select">
+			<option value="">Any</option>
+			<option value="date_added" selected>Lastest</option>
+			<option value="date_added">Oldest</option>
+			<option value="seeds">Seeds</option>
+			<option value="peers">Peers</option>
+			<option value="year">Year</option>
+			<option value="rating">Rating</option>
+			<option value="title">Title</option>
+		</select>
+		<button class="btn btn-primary">Submit</button>
+	</div>
+</form>
+QUALITY : <%= params[:quality] %>
+<div class="container">
+	<div class="row" id="content">
+		<%= render partial: 'movie', collection: @movies %>
+	</div>
+</div>
+<input type="hidden" id="currentPage" value="<%= @current_page %>" />
+<input type="hidden" id="totalPages" value="<%= @total_pages %>" />
+<% unless @current_page.to_i >= @total_pages %>
+	<p id="view-more">
+		<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>
+	</p>
 <% end %>
-
-
-

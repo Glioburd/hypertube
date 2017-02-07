@@ -12,7 +12,6 @@ class MoviesController < ApplicationController
 			with_images = 'true'
 			order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
 			limit = '20'
-			current_page = @current_page
 			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
 			json = response.body
 			# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
@@ -46,37 +45,42 @@ class MoviesController < ApplicationController
 			# 	end
 			# end
 			# @movies = @result['data']['movies']['title']
+		else
+			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
+			@result = JSON.parse(response.body)
+			@movies = []
+			@total_pages = 1
+			if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful'
+				@result['data'].each do |data|
+					if data[0] == 'movies'
+						@movies = @movies + data[1]
+					end
+				end
+			end
+			pirate_bays_searchs = PirateBay::Search.new(params[:term]).execute.to_json
+			searchs = JSON.parse(pirate_bays_searchs)
+			searchs.each do |torrent|
+				if torrent['imdb'] != "" && torrent['seeds'] > 10
+					i = Imdb::Movie.new(torrent['imdb'][2..-1])
+					torrent['title'] = i.title
+					torrent['rating'] = i.rating
+					torrent['year'] = i.year
+					torrent['medium_cover_image'] = i.poster
+					@movies.push(torrent)
+				end
+			end
 		end
 		 # @movies = Post.paginate(:current_page => params[:current_page], :per_current_page => 20)
 	end
 
 	# POST /video/new
 	def new
-		# PIRATE BAY
-		pirate_bays_searchs = PirateBay::Search.new(params[:search][:film]).execute.to_json
-		searchs = JSON.parse(pirate_bays_searchs)
-		if searchs[0]
-		  check = 0
-		  response = ""
-		  searchs.each do |torrent|
-		    if torrent['seeds'] < 10
-		      break
-		    end
-		    response = RestClient.get("http://localhost:3001/download?magnet=#{torrent['magnet_link']}")
-		    if JSON.parse(response.body)['ok'] != 0
-		      check = 1
-		      break
-		    end
-		  end
-		  if check == 1
-		    path = JSON.parse(response.body)['path']
-		    video = Video.create(title: params[:search][:film], description: 'Pirate_bay recherche', form: 'mp4', path: path)
+		response = RestClient.get("http://localhost:3001/download?magnet=#{params['magnet_link']}")
+		if JSON.parse(response.body)['ok']
+		    video = Video.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
 		    redirect_to movie_path(id: video.id)
-		  else
-		    redirect_to root_path
-		  end
 		else
-		  redirect_to root_path
+			redirect_to root_path
 		end
 	end
 
@@ -118,5 +122,4 @@ class MoviesController < ApplicationController
 	def total_pages
 		@total_pages = (@movies_count.to_f / @limit.to_f).ceil
 	end
-
 end
