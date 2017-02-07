@@ -50,6 +50,9 @@
 								<%= render partial: 'movie', collection: @movies %>
 							</div>
 						</div>
+						
+						<input type="" id="current_page" value="<%= @current_page %>">
+						<input type="" id="total_pages" value="<%= @total_pages %>">
 
 						<% unless @current_page.to_i >= @total_pages %>
 							<p id="view-more">
