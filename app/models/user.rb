@@ -56,7 +56,7 @@ class User < ApplicationRecord
           user.password = Devise.friendly_token[0,20]
           user.name = auth.info.name
           o = [('a'..'z'), ('A'..'Z')].map(&:to_a).flatten
-          user.login = auth.info.name + (0...5).map { o[rand(o.length)] }.join
+          user.login = auth.info.nickname + (0...5).map { o[rand(o.length)] }.join
           user.imageOauthUrl = auth.info.image.gsub("_normal", "")
           user.firstname = auth.info.name
         end
