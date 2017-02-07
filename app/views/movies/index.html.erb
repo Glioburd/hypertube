@@ -1,5 +1,40 @@
 <% if current_user %>
 	<% query = params[:term] %><br>
+	<form method="get" action="<%= link_to index, movies_path %>">
+		<div class="select-container">
+			<p>Quality</p>
+			<select name="quality">
+				<option>All</option>
+				<option value="720p">720p</option>
+				<option value="1080p">1080p</option>
+			</select>
+			<p>Rating</p>
+			<select name="rating">
+				<option value="0">All</option>
+				<option value="9">9+</option>
+				<option value="8" selected>8+</option>
+				<option value="7">7+</option>
+				<option value="6">6+</option>
+				<option value="5">5+</option>
+				<option value="4">4+</option>
+				<option value="3">3+</option>
+				<option value="2">2+</option>
+				<option value="1">1+</option>
+			</select>
+			<p>Order by</p>
+			<select name="order-by">
+				<option>Any</option>
+				<option value="lastest" selected>Lastest</option>
+				<option value="oldest">Oldest</option>
+				<option value="seeds">Seeds</option>
+				<option value="peers">Peers</option>
+				<option value="year">Year</option>
+				<option value="rating">Rating</option>
+				<option value="alphabetical">Alphabetical</option>
+			</select>
+			<button></button>
+		</div>
+	</form>
 	<% if query != nil %>
 		<%= !query.empty? %>
 		<% response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + query + '&sort_by=title&order_by=asc') %>
