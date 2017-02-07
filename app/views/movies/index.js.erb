@@ -1,6 +1,9 @@
+
 $('#content').append("<%= j render(partial: 'movie', collection: @movies, format: 'html') %>");
-<% if @current_page.to_i >= @total_pages %>
+<% if @current_page.to_i == @total_pages.to_i %>
+	$('#currentPage').get(0).value++
 	$('#view-more').remove();
 <% else %>
 	$('#view-more a').attr('href', '<%= url_for(page: @current_page.to_i + 1) %>');
+	$('#currentPage').get(0).value++
 <% end %>

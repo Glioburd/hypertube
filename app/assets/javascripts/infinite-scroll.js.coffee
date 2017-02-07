@@ -1,13 +1,13 @@
 $ ->
   content = $('#content')    # where to load new content
   viewMore = $('#view-more') # tag containing the "View More" link
-  currentPage = $('#current_page')
-  totalPages = $('#total_pages')
+  currentPage = $('#currentPage').val()
+  totalPages = $('#totalPages').val()
 
 
   isLoadingNextPage = false  # keep from loading two pages at once
   lastLoadAt = null          # when you loaded the last page
-  minTimeBetweenPages = 100 # milliseconds to wait between loading pages
+  minTimeBetweenPages = 500 # milliseconds to wait between loading pages
   loadNextPageAt = 400      # pixels above the bottom
 
   waitedLongEnoughBetweenPages = ->
@@ -38,8 +38,9 @@ $ ->
 
   # watch the scrollbar
   $(window).scroll ->
-    if approachingBottomOfPage() && waitedLongEnoughBetweenPages()
+    if approachingBottomOfPage() && waitedLongEnoughBetweenPages() && $('#currentPage').val() < $('#totalPages').val()
       nextPage()
+
 
   # failsafe in case the user gets to the bottom
   # without infinite scrolling taking affect.
