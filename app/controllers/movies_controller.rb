@@ -1,16 +1,16 @@
 class MoviesController < ApplicationController	
 	require 'pirate_bay/base.rb'
 	before_action :set_current_page
-
 	def index
 		term = params[:term]
 		if term.nil?
 			# @current_page = '1'
 			puts 'current_page : ' + @current_page
-			minimum_rating = '8.2'
-			sort_by = 'seeds'
+			minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
+			sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
+			puts 'SORT BY : ' + sort_by
 			with_images = 'true'
-			order_by = 'desc'
+			order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
 			limit = '20'
 			current_page = @current_page
 			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
 			# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
 			@result = JSON.parse(json)
 
-			# puts @result
+			puts @result
 			# puts @result['data']['movies'].each do ||
 			# @result['data']['movies'].each do |info|
 			# 	puts info
