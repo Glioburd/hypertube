@@ -3,6 +3,16 @@
 		<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
 	</a>
 	<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
+	<% if movie['languages'] %>
+		<%= form_tag("/movie/new", method: "post") do %>
+			<% languages = []
+				movie['languages'].each_with_index do |l, i|
+					languages.push([l[:language], l[:magnet_link]])
+				end %>
+			<%= select_tag(:magnet_link, options_for_select(languages)) %>
+			<%= submit_tag("Voir le film") %>
+		<% end %>
+	<% end %>
 	<br>
 </div>
 <!-- 250 / 400 -->

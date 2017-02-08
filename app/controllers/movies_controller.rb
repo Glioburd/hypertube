@@ -5,30 +5,35 @@ class MoviesController < ApplicationController
 		term = params[:term]
 		if term.nil?
 			# @current_page = '1'
-			puts 'current_page : ' + @current_page
-			minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
-			sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
-			puts 'SORT BY : ' + sort_by
-			with_images = 'true'
-			order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
-			limit = '20'
-			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
-			json = response.body
-			# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
-			@result = JSON.parse(json)
+			begin
+				puts 'current_page : ' + @current_page
+				minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
+				sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
+				puts 'SORT BY : ' + sort_by
+				with_images = 'true'
+				order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
+				limit = '20'
+				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
+				json = response.body
+				# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
+				@result = JSON.parse(json)
 
-			puts @result
-			# puts @result['data']['movies'].each do ||
-			# @result['data']['movies'].each do |info|
-			# 	puts info
-			# end
+				puts @result
+				# puts @result['data']['movies'].each do ||
+				# @result['data']['movies'].each do |info|
+				# 	puts info
+				# end
 
-			@movies_count = @result['data']['movie_count']
-			puts 'Movie count : ' + @movies_count.to_s
-			@limit = @result['data']['limit']
-			puts 'Limit : ' + @limit.to_s
-			@movies = @result['data']['movies']
-			puts 'number of pages : ' + total_pages.to_s
+				@movies_count = @result['data']['movie_count']
+				puts 'Movie count : ' + @movies_count.to_s
+				@limit = @result['data']['limit']
+				puts 'Limit : ' + @limit.to_s
+				@movies = @result['data']['movies']
+				puts 'number of pages : ' + total_pages.to_s
+			rescue
+				@movies = []
+				@total_pages = 1
+			end
 			# @cover = @result['data']['medium_cover_image']
 			# puts 'cover : ' + @cover
 			# @title = @result['data']['title']
@@ -46,27 +51,40 @@ class MoviesController < ApplicationController
 			# end
 			# @movies = @result['data']['movies']['title']
 		else
-			response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
-			@result = JSON.parse(response.body)
-			@movies = []
-			@total_pages = 1
-			if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful'
-				@result['data'].each do |data|
-					if data[0] == 'movies'
-						@movies = @movies + data[1]
+			begin
+				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
+				@result = JSON.parse(response.body)
+				@movies = []
+				@total_pages = 1
+				if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful'
+					@result['data'].each do |data|
+						if data[0] == 'movies'
+							@movies = @movies + data[1]
+						end
 					end
 				end
+			rescue
+				@movies = []
+				@total_pages = 1
 			end
 			pirate_bays_searchs = PirateBay::Search.new(params[:term]).execute.to_json
 			searchs = JSON.parse(pirate_bays_searchs)
-			searchs.each do |torrent|
+			searchs.each_with_index do |torrent, i|
 				if torrent['imdb'] != "" && torrent['seeds'] > 10
-					i = Imdb::Movie.new(torrent['imdb'][2..-1])
-					torrent['title'] = i.title
-					torrent['rating'] = i.rating
-					torrent['year'] = i.year
-					torrent['medium_cover_image'] = i.poster
-					@movies.push(torrent)
+					movie = @movies.find{|movie| movie['imdb'] == torrent['imdb']}
+					if movie.nil?
+						i = Imdb::Movie.new(torrent['imdb'][2..-1])
+						torrent['title'] = i.title
+						torrent['rating'] = i.rating
+						torrent['year'] = i.year
+						torrent['medium_cover_image'] = i.poster
+						torrent['languages'] = [{language: torrent['language'], magnet_link: torrent['magnet_link']}]
+						@movies.push(torrent)
+					else
+						if @movies[@movies.index(movie)]['languages'].find{|l| l[:language] == torrent['language']}.nil?
+							@movies[@movies.index(movie)]['languages'].push({language: torrent['language'], magnet_link: torrent['magnet_link']})
+						end
+					end
 				end
 			end
 		end
@@ -75,17 +93,17 @@ class MoviesController < ApplicationController
 
 	# POST /video/new
 	def new
-		response = RestClient.get("http://localhost:3001/download?magnet=#{params['magnet_link']}")
+		response = RestClient.get("http://localhost:3001/download?magnet=#{params[:magnet_link]}")
 		if JSON.parse(response.body)['ok']
-		    video = Video.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
-		    redirect_to movie_path(id: video.id)
+		    movie = Movie.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
+		    redirect_to movie_path(id: movie.id)
 		else
 			redirect_to root_path
 		end
 	end
 
 	def show
-		@video = Video.find(params[:id])
+		@video = Movie.find(params[:id])
 	    if @video
 	      if @video.translates.empty?
 	        path = @video.path[1..-1]

@@ -1,6 +1,6 @@
 module PirateBay
   class Result
-    attr_accessor :name, :seeds, :leeches, :magnet_link, :imdb
+    attr_accessor :name, :seeds, :leeches, :magnet_link, :imdb, :language
 
     def initialize(row = nil)
       magnet_links = row.css("td")[1].css("a[title='Download this torrent using magnet']")
@@ -17,9 +17,14 @@ module PirateBay
       begin
         doc = Nokogiri::HTML(get_search_results(row.css(".detLink").first['href']))
         doc = doc.css('#details').css('.col1')
-        doc.css('a').each do |line|
+        doc.css('a').each_with_index do |line|
           if line['href'].include?('imdb')
             self.imdb = line['href'].split('/')[-1]
+          end
+        end
+        doc.css('dt').each_with_index do |line, i|
+          if line.to_s.include?('Spoken')
+            self.language = doc.css('dd')[i].to_s[4..-6]
           end
         end
       rescue
