@@ -127,7 +127,13 @@ class MoviesController < ApplicationController
 
 	# POST /video/new
 	def new
-		response = RestClient.get("http://localhost:3001/download?magnet=#{params[:magnet_link]}")
+		if params[:torrent]
+			torrent = RestClient.get(params[:torrent])
+			torrent = "magnet:?xt=urn:btih:" + Firecracker.hash(torrent.bdecode)
+		else
+			torrent = params[:magnet_link]
+		end
+		response = RestClient.get("http://localhost:3001/download?magnet=#{torrent}")
 		if JSON.parse(response.body)['ok']
 		    movie = Movie.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
 		    redirect_to movie_path(id: movie.id)

@@ -13,6 +13,11 @@
 			<%= select_tag(:magnet_link, options_for_select(languages)) %>
 			<%= submit_tag("Voir le film") %>
 		<% end %>
+	<% else %>
+		<%= form_tag("/movie/new", method: "post") do %>
+			<%= hidden_field_tag 'torrent', torrents['url'] %>
+			<%= submit_tag("Voir le film") %>
+		<% end %>
 	<% end %>
 	<br>
 </div>
