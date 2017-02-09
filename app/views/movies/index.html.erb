@@ -8,28 +8,27 @@
 			<option value="1080p">1080p</option>
 		</select>
 		<p>Rating</p>
-		<select name="rating" class="custom-select">
-			<option value="0">All</option>
-			<option value="9">9+</option>
-			<option value="8" selected>8+</option>
-			<option value="7">7+</option>
-			<option value="6">6+</option>
-			<option value="5">5+</option>
-			<option value="4">4+</option>
-			<option value="3">3+</option>
-			<option value="2">2+</option>
-			<option value="1">1+</option>
+		<select name="minimum_rating" class="custom-select" id="minimum_rating">
+			<option value="9" <% if @minimum_rating == "9" %> selected <% end %> >9+</option>
+			<option value="8" <% if @minimum_rating == "8" %> selected <% end %> >8+</option>
+			<option value="7" <% if @minimum_rating == "7" %> selected <% end %> >7+</option>
+			<option value="6" <% if @minimum_rating == "6" %> selected <% end %> >6+</option>
+			<option value="5" <% if @minimum_rating == "5" %> selected <% end %> >5+</option>
+			<option value="4" <% if @minimum_rating == "4" %> selected <% end %> >4+</option>
+			<option value="3" <% if @minimum_rating == "3" %> selected <% end %> >3+</option>
+			<option value="2" <% if @minimum_rating == "2" %> selected <% end %> >2+</option>
+			<option value="1" <% if @minimum_rating == "1" %> selected <% end %> >1+</option>
 		</select>
 		<p>Sort by</p>
 		<select name="sort_by" class="custom-select">
-			<option value="">Any</option>
-			<option value="date_added" selected>Lastest</option>
-			<option value="date_added">Oldest</option>
-			<option value="seeds">Seeds</option>
-			<option value="peers">Peers</option>
-			<option value="year">Year</option>
-			<option value="rating">Rating</option>
-			<option value="title">Title</option>
+			<option <% if @sort_by == "date_added_lastest" %> selected <% end %> value="date_added_lastest" >Lastest added</option>
+			<option <% if @sort_by == "date_added_oldest" %> selected <% end %> value="date_added_oldest">Oldest added</option>
+			<option <% if @sort_by == "seeds" %> selected <% end %> value="seeds">Seeds</option>
+			<option <% if @sort_by == "peers" %> selected <% end %> value="peers">Peers</option>
+			<option <% if @sort_by == "year_lastest" %> selected <% end %> value="year_lastest">Lastest movies</option>
+			<option <% if @sort_by == "year_oldest" %> selected <% end %> value="year_oldest">Oldest movies</option>
+			<option <% if @sort_by == "rating" %> selected <% end %> value="rating">Rating</option>
+			<option <% if @sort_by == "title" %> selected <% end %> value="title">Title</option>
 		</select>
 		<button class="btn btn-primary">Submit</button>
 	</div>
@@ -44,6 +43,15 @@
 <input type="hidden" id="totalPages" value="<%= @total_pages %>" />
 <% unless @current_page.to_i == @total_pages %>
 	<p id="view-more">
-		<%= link_to('View More', url_for(page: @current_page.to_i + 1), class: 'btn btn-primary', remote: true) %>
+		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating]), class: 'btn btn-primary', remote: true) %>
 	</p>
 <% end %>
+<script type="text/javascript">
+	//var rating = $( "#minimum_rating option:selected" ).text();
+
+	//alert(rating);
+	// $("#minimum_rating").change(function(){
+	// 	$("#minimum_rating").selected = $(this).val()
+	// 	 alert('Selected value: ' + $(this).val());
+	// });
+</script>

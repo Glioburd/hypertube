@@ -7,13 +7,41 @@ class MoviesController < ApplicationController
 			# @current_page = '1'
 			begin
 				puts 'current_page : ' + @current_page
-				minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
-				sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
-				puts 'SORT BY : ' + sort_by
+				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
+				@sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
+				puts 'SORT BY : ' + @sort_by
 				with_images = 'true'
-				order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
+				case @sort_by
+					when 'date_added_lastest'
+						toto = 'date_added'
+						order_by = 'desc'
+					when 'date_added_oldest'
+						toto = 'date_added'
+						order_by = 'asc'
+					when 'year_lastest'
+						toto = 'year'
+						order_by = 'desc'
+					when 'year_oldest'
+						toto = 'year'
+						order_by = 'asc'
+					when 'rating'
+						toto = 'rating'
+						order_by = 'desc'
+					when 'title'
+						toto = 'title'
+						order_by = 'asc'
+					when 'seeds'
+						toto = 'seeds'
+						order_by = 'desc'
+					when 'peers'
+						toto = 'peers'
+						order_by = 'desc'
+					else
+						toto = 'seeds'
+				end
+				order_by = order_by.nil? ? 'asc' : order_by
 				limit = '50'
-				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
+				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+@minimum_rating+'&sort_by='+toto+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page+'quality:1080p')
 				json = response.body
 				# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
 				@result = JSON.parse(json)
@@ -30,6 +58,12 @@ class MoviesController < ApplicationController
 				puts 'Limit : ' + @limit.to_s
 				@movies = @result['data']['movies']
 				puts 'number of pages : ' + total_pages.to_s
+				puts 'minimum_rating : ' + @minimum_rating
+				puts 'sort_by : ' + @sort_by
+				puts 'sort_by (toto): ' + toto
+				puts 'order_by : ' + order_by
+				# puts response
+
 			rescue
 				@movies = []
 				@total_pages = 1

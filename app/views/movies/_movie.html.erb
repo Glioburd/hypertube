@@ -2,7 +2,8 @@
 	<a href="#" class="thumbnail">
 		<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
 	</a>
-	<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
+	<% torrents = movie['torrents'][1] %>
+	<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s + ' Seeds : ' + torrents['seeds'].to_s + ' Peers : ' + torrents['peers'].to_s %></p>
 	<% if movie['languages'] %>
 		<%= form_tag("/movie/new", method: "post") do %>
 			<% languages = []
