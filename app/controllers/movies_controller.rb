@@ -129,6 +129,7 @@ class MoviesController < ApplicationController
 	def new
 		if params[:torrent]
 			torrent = RestClient.get(params[:torrent])
+			puts Firecracker.hash(torrent.bdecode)
 			torrent = "magnet:?xt=urn:btih:" + Firecracker.hash(torrent.bdecode)
 		else
 			torrent = params[:magnet_link]
