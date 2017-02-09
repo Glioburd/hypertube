@@ -12,7 +12,7 @@ class MoviesController < ApplicationController
 				puts 'SORT BY : ' + sort_by
 				with_images = 'true'
 				order_by = params[:order_by].nil? ? 'desc' : params[:order_by]
-				limit = '20'
+				limit = '50'
 				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?minimum_rating='+minimum_rating+'&sort_by='+sort_by+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&page='+@current_page)
 				json = response.body
 				# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20
