@@ -1,5 +1,6 @@
 class MoviesController < ApplicationController	
 	require 'pirate_bay/base.rb'
+	require 'imdb.rb'
 	before_action :set_current_page
 	def index
 		term = params[:term]

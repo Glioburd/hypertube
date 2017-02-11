@@ -13,10 +13,8 @@ gem 'omniauth-facebook'
 gem 'omniauth-marvin'
 gem 'omniauth-oauth2'
 gem 'omniauth-twitter'
-gem 'imdb'
 gem 'httparty'
 gem 'json'
-
 
 gem 'imdb_party'
 gem 'firecracker'
