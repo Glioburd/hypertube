@@ -129,13 +129,16 @@ class MoviesController < ApplicationController
 	# POST /video/new
 	def new
 		if params[:torrent]
-			torrent = RestClient.get(params[:torrent])
-			puts Firecracker.hash(torrent.bdecode)
-			torrent = "magnet:?xt=urn:btih:" + Firecracker.hash(torrent.bdecode)
+			torrent =  HTTParty.get(params[:torrent])
+			torrent = BEncode.load(torrent)
+			info_hash = torrent["info"].bencode
+			info_sha1 = OpenSSL::Digest::SHA1.digest(info_hash)
+			torrent = Base32.encode(info_sha1)
+			torrent = "magnet:?xt=urn:btih:" + torrent
 		else
 			torrent = params[:magnet_link]
 		end
-		response = RestClient.get("http://localhost:3001/download?magnet=#{torrent}")
+		response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}")
 		if JSON.parse(response.body)['ok']
 		    movie = Movie.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
 		    redirect_to movie_path(id: movie.id)
@@ -149,19 +152,22 @@ class MoviesController < ApplicationController
 	    if @video
 	      if @video.translates.empty?
 	        path = @video.path[1..-1]
-	        file = Subdb::Video.new("public/" + path)
-	        file_in_folder = path.split('/')[-1].split('.')[0]
-	        trads = file.search
-	        if trads
-	          trads = trads.split(',')
-	          trads.each do |trad|
-	            text = file.download([trad])
-	            File.open(File.join("public/trads/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
-	              f.write(text.force_encoding("UTF-8"))
-	              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, video: @video)
-	            end
-	          end
-	        end
+	        begin
+		        file = Subdb::Video.new("public/" + path)
+		        file_in_folder = path.split('/')[-1].split('.')[0]
+		        trads = file.search
+		        if trads
+		          trads = trads.split(',')
+		          trads.each do |trad|
+		            text = file.download([trad])
+		            File.open(File.join("public/trads/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
+		              f.write(text.force_encoding("UTF-8"))
+		              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, video: @video)
+		            end
+		          end
+		        end
+		    rescue
+		    end
 	      end
 	      @translates = @video.translates
 	    else

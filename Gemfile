@@ -16,8 +16,9 @@ gem 'omniauth-twitter'
 gem 'httparty'
 gem 'json'
 
-gem 'imdb_party'
-gem 'firecracker'
+gem 'jwplayer-rails'
+gem 'base32'
+gem 'bencode'
 gem 'subdb'
 gem "mediaelement_rails"
 
