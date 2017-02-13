@@ -35,7 +35,7 @@
 	</div>
 </form>
 
-<div class="container">
+<div class="container" id="moviesGallery">
 	<div class="row" id="content">
 		<%= render partial: 'movie', collection: @movies %>
 	</div>
@@ -43,11 +43,13 @@
 
 <input type="hidden" id="currentPage" value="<%= @current_page %>" />
 <input type="hidden" id="totalPages" value="<%= @total_pages %>" />
+
 <% unless @current_page.to_i == @total_pages %>
 	<p id="view-more">
-		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating]), class: 'btn btn-primary', remote: true) %>
+		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by: params[:sort_by], quality: params[:quality]), class: 'btn btn-primary', remote: true) %>
 	</p>
 <% end %>
+
 <script type="text/javascript">
 	//var rating = $( "#minimum_rating option:selected" ).text();
 
