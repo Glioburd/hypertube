@@ -7,8 +7,12 @@
 <table>
 <% @torrent.each do |key, value| %>
 <tr>
-	<td><%= key %>:</td>
-	<td><pre><%= value %></pre></td>
+	<% if key != "medium_cover_image" %>
+		<td><%= key %>:</td>
+		<td><pre><%= value %></pre></td>
+	<% else %>
+		<td><img src="<%= value %>" class="img-thumbnail"></td>
+	<% end %>
 </tr>
 <% end %>
 </table>

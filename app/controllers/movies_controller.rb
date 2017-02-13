@@ -172,6 +172,7 @@ class MoviesController < ApplicationController
 		@torrent['cast_members'] = i.cast_members
 		@torrent['production'] = i.director
 		@torrent['writers'] = i.writers
+		@torrent['time'] = i.length.to_s + ' minutes'
 	    if @video
 	      if @video.translates.empty?
 	        path = @video.path[0..-1]
