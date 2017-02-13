@@ -12,3 +12,6 @@ fr:
   logout: "Déconnexion"
   loggedin: "Connecté en tant que "
   rememberme: "Ce souvenir de moi "
+  user: "Utilisateurs"
+  movies: "Films"
+  search: "Recherche"

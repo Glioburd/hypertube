@@ -32,3 +32,6 @@ en:
   logout: "Logout"
   loggedin: "Logged in as "
   rememberme: "Remember me"
+  user: "Users"
+  movies: "Movies"
+  search: "Search"
