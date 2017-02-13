@@ -35,7 +35,7 @@
 								<div class="dropdown-menu" aria-labelledby="dropdown01">
 									<a class="dropdown-item" href="#">Profile</a>
 									<a class="dropdown-item" href="#">Paramètres</a>
-									<a class="dropdown-item" href="<%= link_to 'Logout'.html_safe, destroy_user_session_path, method: :delete %>"></a>
+									<%= link_to :Deconnexion, destroy_user_session_path, method: :delete %>
 								</div>
 							</li>
 						</ul>

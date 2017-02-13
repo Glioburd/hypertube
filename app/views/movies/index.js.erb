@@ -1,4 +1,3 @@
-// $('.page_number').html() = "PAGE NUMBER <%= @page_number %>"
 $('#content').append("<%= j render(partial: 'movie', collection: @movies, format: 'html') %>");
 <% if @current_page.to_i == @total_pages.to_i %>
 	$('#currentPage').get(0).value++;
@@ -7,4 +6,3 @@ $('#content').append("<%= j render(partial: 'movie', collection: @movies, format
 	$('#view-more a').attr('href', '<%= url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by:params[:sort_by], quality: params[:quality]) %>');
 	$('#currentPage').get(0).value++;
 <% end %>
- 

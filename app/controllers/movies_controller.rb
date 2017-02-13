@@ -113,8 +113,10 @@ class MoviesController < ApplicationController
 					if movie.nil?
 						i = Imdb::Movie.new(torrent['imdb'][2..-1])
 						torrent['title'] = i.title
+						torrent['genres'] = i.genres
 						torrent['rating'] = i.rating
 						torrent['year'] = i.year
+						torrent['description_full'] = i.plot_summary
 						torrent['medium_cover_image'] = i.poster
 						torrent['languages'] = [{language: torrent['language'], magnet_link: torrent['magnet_link']}]
 						@movies.push(torrent)
@@ -141,20 +143,38 @@ class MoviesController < ApplicationController
 		else
 			torrent = params[:magnet_link]
 		end
-		response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}")
-		if JSON.parse(response.body)['ok']
-		    movie = Movie.create(title: params[:title], description: 'Pirate_bay recherche', form: 'mp4', path: JSON.parse(response.body)['path'])
-		    redirect_to movie_path(id: movie.id)
-		else
+		movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche')
+		Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
+		begin
+			response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}&id=#{movie.id}")
+			if JSON.parse(response.body)['ok']
+			    movie.update(path: JSON.parse(response.body)['path'])
+			    redirect_to movie_path(id: movie.id)
+			else
+				redirect_to root_path
+			end
+		rescue
+			FileUtils.remove_dir("#{Rails.root}/public/videos/#{movie.id}", true)
 			redirect_to root_path
 		end
 	end
 
 	def show
 		@video = Movie.find(params[:id])
+		i = Imdb::Movie.new(@video.imdb[2..-1])
+		@torrent = {}
+		@torrent['title'] = i.title
+		@torrent['genres'] = i.genres
+		@torrent['rating'] = i.rating
+		@torrent['year'] = i.year
+		@torrent['description_full'] = i.plot_summary
+		@torrent['medium_cover_image'] = i.poster
+		@torrent['cast_members'] = i.cast_members
+		@torrent['production'] = i.director
+		@torrent['writers'] = i.writers
 	    if @video
 	      if @video.translates.empty?
-	        path = @video.path[1..-1]
+	        path = @video.path[0..-1]
 	        begin
 		        file = Subdb::Video.new("public/" + path)
 		        file_in_folder = path.split('/')[-1].split('.')[0]
@@ -163,9 +183,9 @@ class MoviesController < ApplicationController
 		          trads = trads.split(',')
 		          trads.each do |trad|
 		            text = file.download([trad])
-		            File.open(File.join("public/trads/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
+		            File.open(File.join("public/videos/#{@video.id}/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
 		              f.write(text.force_encoding("UTF-8"))
-		              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, video: @video)
+		              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, movie: @video)
 		            end
 		          end
 		        end
