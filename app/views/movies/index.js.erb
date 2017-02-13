@@ -7,3 +7,4 @@ $('#content').append("<%= j render(partial: 'movie', collection: @movies, format
 	$('#view-more a').attr('href', '<%= url_for(page: @current_page.to_i + 1) %>');
 	$('#currentPage').get(0).value++;
 <% end %>
+ 

@@ -16,7 +16,7 @@ $ ->
   # console.log(moviesGallery.clientHeight + $(document).scrollTop()) 
   # console.log(document.body.offsetHeight - loadNextPageAt)
 
-  # console.log(moviesGallery.clientHeight)
+  console.log(moviesGallery.clientHeight)
 
   waitedLongEnoughBetweenPages = ->
     return lastLoadAt == null || new Date() - lastLoadAt > minTimeBetweenPages

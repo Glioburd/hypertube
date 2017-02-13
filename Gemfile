@@ -15,6 +15,7 @@ gem 'omniauth-oauth2'
 gem 'omniauth-twitter'
 gem 'httparty'
 gem 'json'
+gem 'gistyle'
 
 gem 'jwplayer-rails'
 gem 'base32'
