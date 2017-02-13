@@ -1,4 +1,5 @@
 <% query = params[:term] %><br>
+<% $increment = 0 %>
 <form method="get" action="<% link_to movies_path %>">
 	<div class="select-container">
 		<p>Quality</p>
@@ -39,6 +40,7 @@
 		<%= render partial: 'movie', collection: @movies %>
 	</div>
 </div>
+
 <input type="hidden" id="currentPage" value="<%= @current_page %>" />
 <input type="hidden" id="totalPages" value="<%= @total_pages %>" />
 <% unless @current_page.to_i == @total_pages %>
