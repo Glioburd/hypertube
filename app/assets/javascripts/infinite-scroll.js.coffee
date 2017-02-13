@@ -10,11 +10,11 @@ $ ->
   loadNextPageAt = 2000
   moviesGallery = document.getElementById('moviesGallery')
   # console.log('moviesGallery.clientHeight : '+moviesGallery.clientHeight)     
-  console.log('document.scrolltop() : '+$(document).scrollTop())
+  # console.log('document.scrolltop() : '+$(document).scrollTop())
   # console.log('document.body.offsetHeight : '+document.body.offsetHeight)
   # console.log('loadNextPageAt : '+loadNextPageAt)
-  console.log(moviesGallery.clientHeight + $(document).scrollTop()) 
-  console.log(document.body.offsetHeight - loadNextPageAt)
+  # console.log(moviesGallery.clientHeight + $(document).scrollTop()) 
+  # console.log(document.body.offsetHeight - loadNextPageAt)
 
   # console.log(moviesGallery.clientHeight)
 
