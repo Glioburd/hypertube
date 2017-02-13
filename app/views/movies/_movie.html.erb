@@ -38,8 +38,10 @@
           <p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
           <p><strong>Year : </strong><%= movie['year'].to_s %></p>
           <p><strong>Note : </strong><%= movie['rating'].to_s %></p>
-          <% runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
-          <p><strong>Duration : </strong><%= runtime.to_s %></p>
+          <% if movie['runtime'] %>
+          	<% runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
+          	<p><strong>Duration : </strong><%= runtime.to_s %></p>
+          <% end %>
           <% if movie['torrents'] && movie['torrents'][1] %>
           <% torrents = movie['torrents'][1] %>
           <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
