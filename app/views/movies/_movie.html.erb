@@ -3,10 +3,13 @@
 	<a href="#" class="thumbnail" data-toggle="modal" data-target="#<%= myModal %>">
 		<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
 	</a>
-
+<strong>BELONGS TO PAGE :</strong> <%= @current_page.to_s %>
 	<% if movie['torrents'] && movie['torrents'][1] %>
 		<% torrents = movie['torrents'][1] %>
 		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s + ' Seeds : ' + torrents['seeds'].to_s + ' Peers : ' + torrents['peers'].to_s %></p>
+
+		 
+
 	<% else %>
 		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
 	<% end %>
@@ -27,39 +30,39 @@
 	<% end %>
 	<br>
 	<div class="modal fade" id="<%= myModal %>" role="dialog">
-    <div class="modal-dialog">
-    <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title"><%= movie['title'] %></h4>
-        </div>
-        <div class="modal-body">
-          <p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
-          <p><strong>Year : </strong><%= movie['year'].to_s %></p>
-          <p><strong>Note : </strong><%= movie['rating'].to_s %></p>
-          <% if movie['runtime'] %>
-          	<% runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
-          	<p><strong>Duration : </strong><%= runtime.to_s %></p>
-          <% end %>
-          <% if movie['torrents'] && movie['torrents'][1] %>
-	          <% torrents = movie['torrents'][1] %>
-	          <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
-	          <p><strong style="color: red;">Peers : </strong><%= torrents['peers'].to_s %></p>
-	          <p><strong>Size : </strong><%= torrents['size'].to_s %></p>
-          <% end %>
-          <% if movie['genres'] %>
-         	 	<p><strong>Genres : </strong><%= movie['genres'].to_sentence %></p>
-          <% end %>
-          <p><strong>Description : </strong><%= movie['description_full'] %></p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-    </div>
-    <% $increment += 1 %>
+	<div class="modal-dialog">
+	<!-- Modal content-->
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <button type="button" class="close" data-dismiss="modal">&times;</button>
+		  <h4 class="modal-title"><%= movie['title'] %></h4>
+		</div>
+		<div class="modal-body">
+		  <p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
+		  <p><strong>Year : </strong><%= movie['year'].to_s %></p>
+		  <p><strong>Note : </strong><%= movie['rating'].to_s %></p>
+		  <% if movie['runtime'] %>
+			<% runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
+			<p><strong>Duration : </strong><%= runtime.to_s %></p>
+		  <% end %>
+		  <% if movie['torrents'] && movie['torrents'][1] %>
+			  <% torrents = movie['torrents'][1] %>
+			  <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
+			  <p><strong style="color: red;">Peers : </strong><%= torrents['peers'].to_s %></p>
+			  <p><strong>Size : </strong><%= torrents['size'].to_s %></p>
+		  <% end %>
+		  <% if movie['genres'] %>
+				<p><strong>Genres : </strong><%= movie['genres'].to_sentence %></p>
+		  <% end %>
+		  <p><strong>Description : </strong><%= movie['description_full'] %></p>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	  </div>
+	</div>
+	</div>
+	<% $increment += 1 %>
 </div>
   
 <!-- 250 / 400 -->

@@ -8,8 +8,11 @@ class MoviesController < ApplicationController
 			# @current_page = '1'
 			begin
 				puts 'current_page : ' + @current_page
+
 				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
 				@sort_by = params[:sort_by].nil? ? 'seeds' : params[:sort_by]
+				puts 'params minimum_rating  : ' +@minimum_rating
+				puts 'params sort_by  : ' + @sort_by
 				puts 'SORT BY : ' + @sort_by
 				with_images = 'true'
 				case @sort_by
