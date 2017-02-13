@@ -43,10 +43,10 @@
           	<p><strong>Duration : </strong><%= runtime.to_s %></p>
           <% end %>
           <% if movie['torrents'] && movie['torrents'][1] %>
-          <% torrents = movie['torrents'][1] %>
-          <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
-          <p><strong style="color: red;">Peers : </strong><%= torrents['peers'].to_s %></p>
-          <p><strong>Size : </strong><%= torrents['size'].to_s %></p>
+	          <% torrents = movie['torrents'][1] %>
+	          <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
+	          <p><strong style="color: red;">Peers : </strong><%= torrents['peers'].to_s %></p>
+	          <p><strong>Size : </strong><%= torrents['size'].to_s %></p>
           <% end %>
           <% if movie['genres'] %>
          	 	<p><strong>Genres : </strong><%= movie['genres'].to_sentence %></p>

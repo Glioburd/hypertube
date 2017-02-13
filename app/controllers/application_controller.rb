@@ -2,12 +2,17 @@ class ApplicationController < ActionController::Base
 	protect_from_forgery with: :exception
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :set_locale
-
+	
   	def set_locale
-  		I18n.locale = params[:locale] || I18n.default_locale
-  		Rails.application.routes.default_url_options[:locale]= I18n.locale
-    	#I18n.locale = current_user.try(:locale) || I18n.default_locale
+  		locale = params[:locale].to_s.strip.to_sym
+  		I18n.locale = I18n.available_locales.include?(locale) ? locale : I18n.default_locale
+  		#I18n.locale = params[:locale] || I18n.default_locale
+  		#Rails.application.routes.default_url_options[:locale]= I18n.locale
   	end
+
+  	def default_url_options
+  		{ locale: I18n.locale }
+	end
 
 	protected
 

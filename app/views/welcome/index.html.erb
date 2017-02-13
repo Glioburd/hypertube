@@ -1,13 +1,12 @@
 <div id="container">
-<%= link_to_unless I18n.locale == :en, t('langueEn'), locale: :en %>
-|
-<%= link_to_unless I18n.locale == :fr, t('langueFr'), locale: :fr %>
+<p class="btn btn-info"><%= link_to_unless I18n.locale == :en, t('langueEn'), locale: :en %></p>
+<p class="btn btn-info"><%= link_to_unless I18n.locale == :fr, t('langueFr'), locale: :fr %></p>
 </p>
 <h1>Hyper Tube !</h1>
 <% if user_signed_in? %>
-  <%= t('loggedin') %><strong><%= current_user.email %></strong>.
-  <%= link_to t('editprofil'), edit_user_registration_path, :class => 'navbar-link' %> |
-  <%= link_to t('logout'), destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+  <%= t('loggedin') %><strong><%= current_user.email %></strong>.<br />
+  <%= link_to t('editprofil'), edit_user_registration_path, :class => 'btn btn-danger', :id => 'logout' %>
+  <%= link_to t('logout'), destroy_user_session_path, method: :delete,:class => 'btn btn-danger', :id => 'logout' %>
 <% else %>
   <div id="login">
     <a href="<%= new_user_registration_path %>">
@@ -37,7 +36,5 @@
   <a class="btn btn-block btn-social btn-twitter" href="<%= user_twitter_omniauth_authorize_path %>">
     <span class="fa fa-twitter"></span> <%= t :signin %> Twitter
   </a>
-<% else %>
-  <%= link_to t('logout').html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger', :id => 'logout'%>
 <% end %>
 </div>

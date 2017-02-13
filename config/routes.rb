@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks" }
-  get 'welcome/index'
+  scope "(:locale)", locale: /en|fr/ do 	
+  	get 'welcome/index'
+  	get '/users', to: 'users#index', as: 'users'
+  	get '/users/:login', to: 'users#show', as: 'userprofil'
+  	get '/movies', to: 'movies#index', as: 'movies'
+  	post '/movie/new', to: 'movies#new', as: 'new_movie'
+  	get '/movie/:id', to: 'movies#show', as: 'movie'
+  end
   root to: "welcome#index"
-  get '/users', to: 'users#index', as: 'users'
-  get '/users/:login', to: 'users#show', as: 'userprofil'
-  get '/movies', to: 'movies#index', as: 'movies'
-  post '/movie/new', to: 'movies#new', as: 'new_movie'
-  get '/movie/:id', to: 'movies#show', as: 'movie'
 end
