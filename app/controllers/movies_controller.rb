@@ -203,7 +203,7 @@ class MoviesController < ApplicationController
 	      if @video.translates.empty?
 	        path = @video.path[0..-1]
 	        begin
-		        file = Subdb::Video.new("public/" + path)
+		        file = Subdb::Video.new("public/videos/#{@video.id}/" + path)
 		        file_in_folder = path.split('/')[-1].split('.')[0]
 		        trads = file.search
 		        if trads

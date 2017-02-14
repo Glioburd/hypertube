@@ -1,4 +1,5 @@
-<video class="mejs-player" id="video" width="800" height="500">
+<link href="http://vjs.zencdn.net/5.16.0/video-js.css" rel="stylesheet">
+<video class="video-js vjs-default-skin" id="video" width="800" height="500" controls>
 <source src="/videos/<%= @video.id %>/playlist.m3u8" type="application/x-mpegURL">
   <% @translates.each do |translate| %>
     <track src="/videos/<%= @video.id %>/<%= translate.path %>" kind="subtitles" srclang="<%= translate.label %>" label="<%= translate.label %>">
@@ -39,17 +40,25 @@
     <%= f.submit :Commenter %>
   <% end %>
 </div>
+<script src="http://vjs.zencdn.net/5.16.0/video.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.2.1/videojs-contrib-hls.js"></script>
 <script>
   $(document).ready(function () {
-    $('#video').mediaelementplayer({
-      success: function (media) {
-        $(media).closest('.media-wrapper').children('div:first').attr('lang', mejs.i18n.language());
-        var renderer = $('#' + media.id + '-rendername');
-        media.addEventListener('error', function (e) {
-          renderer.find('.error').html('<strong>Error</strong>: ' + e.message);
-        }, false);
-      }
-    });
+    if (window.chrome) {
+      $('#video').mediaelementplayer({
+        success: function (media) {
+          $(media).closest('.media-wrapper').children('div:first').attr('lang', mejs.i18n.language());
+          var renderer = $('#' + media.id + '-rendername');
+          media.addEventListener('error', function (e) {
+            renderer.find('.error').html('<strong>Error</strong>: ' + e.message);
+          }, false);
+        }
+      });
+    }
+    else {
+      videojs.options.flash.swf = "https://cdnjs.cloudflare.com/ajax/libs/videojs-swf/5.2.0/video-js.swf";
+      videojs('video');
+    }
     $('#new_comment > form').on('ajax:success', function(e, data, status, xhr) {
       $('#body_comment').html($('#body_comment').html() + '<tr><td>' + data.comment + '</td><td>' + data.user + '</td><td>Maintenant</td></tr>')
       $("#new_comment > form")[0].reset();
