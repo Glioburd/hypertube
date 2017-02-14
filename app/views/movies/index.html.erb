@@ -9,7 +9,7 @@
 			<option value="1080p">1080p</option>
 		</select>
 		<p>Rating</p>
-		<select name="minimum_rating" class="custom-select" id="minimum_rating">
+		<select name="minimum_rating" class="custom-select">
 			<option value="9" <% if @minimum_rating == "9" %> selected <% end %> >9+</option>
 			<option value="8" <% if @minimum_rating == "8" %> selected <% end %> >8+</option>
 			<option value="7" <% if @minimum_rating == "7" %> selected <% end %> >7+</option>
@@ -42,8 +42,10 @@
 
 <input type="" id="currentPage" value="<%= @current_page %>" />
 <input type="" id="totalPages" value="<%= @total_pages %>" />
+<input type="" id="et" value="<%= @minimum_rating %>" />
+<input type="" id="te" value="<%= @sort_by %>" />
 
-<% unless @current_page.to_i == @total_pages %>
+<% unless @current_page.to_i == @total_pages.to_i %>
 	<p id="view-more">
 		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by: params[:sort_by], quality: params[:quality]), class: 'btn btn-primary', remote: true) %>
 	</p>

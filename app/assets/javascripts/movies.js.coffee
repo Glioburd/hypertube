@@ -6,6 +6,7 @@ $ ->
     currentPage = $('#currentPage').val()
     totalPages = $('#totalPages').val()
 
+    i = 0
     isLoadingNextPage = false
     lastLoadAt = null
     minTimeBetweenPages = 500
@@ -18,14 +19,10 @@ $ ->
     # console.log(moviesGallery.clientHeight + $(document).scrollTop()) 
     # console.log(document.body.offsetHeight - loadNextPageAt)
 
-    console.log(moviesGallery.clientHeight)
+    # console.log(moviesGallery.clientHeight)
 
     waitedLongEnoughBetweenPages = ->
       return lastLoadAt == null || new Date() - lastLoadAt > minTimeBetweenPages
-
-    # approachingBottomOfPage = ->
-    #   return document.documentElement.clientHeight +
-    #     $(document).scrollTop() < document.body.offsetHeight - loadNextPageAt
 
     approachingBottomOfPage = ->
       return moviesGallery.clientHeight +
@@ -52,12 +49,7 @@ $ ->
 
     # watch the scrollbar
     $(window).scroll ->
-      console.log(approachingBottomOfPage())
-      if approachingBottomOfPage() && waitedLongEnoughBetweenPages() && $('#currentPage').val() < $('#totalPages').val()
-        # console.log('moviesGallery.clientHeight : '+moviesGallery.clientHeight)     
-        # console.log('document.scrolltop() : '+$(document).scrollTop())
-        # console.log('document.body.offsetHeight : '+document.body.offsetHeight)
-        # console.log('loadNextPageAt : '+loadNextPageAt)
+      if approachingBottomOfPage() && waitedLongEnoughBetweenPages() && parseInt($('#currentPage').val()) < parseInt($('#totalPages').val())
         nextPage()
 
     # failsafe in case the user gets to the bottom
@@ -65,17 +57,3 @@ $ ->
     viewMore.find('a').click (e) ->
       nextPage()
       e.preventDefault()
-
-
-  # $(document).ready(function() {
-  #   if ($('#moviesGallery').length) {
-  #     $(window).scroll(function() {
-  #       var url = $('#moviesGallery .next_page').attr('href');
-  #       if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {
-  #         $('#moviesGallery').text("Please Wait...");
-  #         return $.getScript(url);
-  #       }
-  #     });
-  #     return $(window).scroll();
-  #   }
-  # });
