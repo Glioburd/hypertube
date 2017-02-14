@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20170213195142) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
+    t.string   "email",                  default: ""
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20170213195142) do
     t.string   "avatar"
     t.string   "provider"
     t.string   "uid"
+    t.text     "avatar_url"
     t.text     "imageOauthUrl"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

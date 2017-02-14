@@ -7,6 +7,6 @@ Rails.application.routes.draw do
   	get '/movies', to: 'movies#index', as: 'movies'
   	post '/movie/new', to: 'movies#new', as: 'new_movie'
   	get '/movie/:id', to: 'movies#show', as: 'movie'
+    root to: "welcome#index"
   end
-  root to: "welcome#index"
 end
