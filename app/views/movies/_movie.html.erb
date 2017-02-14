@@ -4,11 +4,14 @@
 		<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail"></p>
 	</a>
 <strong>BELONGS TO PAGE :</strong> <%= @current_page.to_s %>
+	<% if movie['view'] %>
+		<div style="color: green;">Déjà vu</div>
+	<% end %>
 	<% if movie['torrents'] && movie['torrents'][1] %>
 		<% torrents = movie['torrents'][1] %>
-			<% if movie['title'] && movie['year'] && movie['rating'] && torrents['seeds'] && torrents['peers'] %>
-				<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
-			<% end %>
+		<% if movie['title'] && movie['year'] && movie['rating'] && torrents['seeds'] && torrents['peers'] %>
+			<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
+		<% end %>
 	<% else %>
 		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
 	<% end %>

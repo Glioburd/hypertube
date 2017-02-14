@@ -16,6 +16,29 @@
 </tr>
 <% end %>
 </table>
+<table>
+  <thead>
+    <th>auteur</th>
+    <th>content</th>
+    <th>Date</th>
+  </thead>
+  <tbody id="body_comment">
+    <% @video.comments.each do |comment| %>
+      <tr>
+        <td><%= comment.user.login %></td>
+        <td><pre><%= comment.content %></pre></td>
+        <td><%= comment.created_at.strftime("%d-%m-%Y %H:%M") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div id="new_comment">
+  <%= form_for(:comment, :url => new_comment_path(format: :json), remote: true) do |f| %>
+    <%= f.hidden_field :id, value: @video.id %>
+    <%= f.text_area :content, placeholder: 'Votre commentaire ici' %>
+    <%= f.submit :Commenter %>
+  <% end %>
+</div>
 <script>
   $(document).ready(function () {
     $('#video').mediaelementplayer({
@@ -26,6 +49,10 @@
           renderer.find('.error').html('<strong>Error</strong>: ' + e.message);
         }, false);
       }
+    });
+    $('#new_comment > form').on('ajax:success', function(e, data, status, xhr) {
+      $('#body_comment').html($('#body_comment').html() + '<tr><td>' + data.comment + '</td><td>' + data.user + '</td><td>Maintenant</td></tr>')
+      $("#new_comment > form")[0].reset();
     });
   });
 </script>

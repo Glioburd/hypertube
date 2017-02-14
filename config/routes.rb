@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   	post '/movie/new', to: 'movies#new', as: 'new_movie'
   	get '/movie/:id', to: 'movies#show', as: 'movie'
 
+    post '/comment/new', to: 'comment#new', as: 'new_comment'
     root to: "welcome#index"
   end
 end

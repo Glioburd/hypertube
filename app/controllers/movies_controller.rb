@@ -1,8 +1,11 @@
 class MoviesController < ApplicationController	
 	require 'pirate_bay/base.rb'
 	require 'imdb.rb'
+	before_action :authenticate_user!
 	before_action :set_current_page
+
 	def index
+		@user = current_user.id
 		term = params[:term]
 		if term.nil?
 			# @current_page = '1'
@@ -66,6 +69,9 @@ class MoviesController < ApplicationController
 					if response.code != 200
 						getimage['medium_cover_image'] = view_context.image_path('notFound.png')
 					end
+					if View.find_by(user_id: current_user.id, movie: Movie.find_by(imdb: getimage['imdb_code']))
+						getimage['view'] = true
+					end
 				end
 				puts 'number of pages : ' + total_pages.to_s
 				puts 'minimum_rating : ' + @minimum_rating
@@ -105,6 +111,9 @@ class MoviesController < ApplicationController
 					if response.code != 200
 						getimage['medium_cover_image'] = view_context.image_path('notFound.png')
 					end
+					if View.find_by(user_id: current_user.id, movie: Movie.find_by(imdb: getimage['imdb_code']))
+						getimage['view'] = true
+					end
 				end
 				
 			rescue
@@ -118,6 +127,9 @@ class MoviesController < ApplicationController
 					movie = @movies.find{|movie| movie['imdb'] == torrent['imdb']}
 					if movie.nil?
 						i = Imdb::Movie.new(torrent['imdb'][2..-1])
+						if View.find_by(user_id: current_user.id, movie: Movie.find_by(imdb: torrent['imdb']))
+							torrent['view'] = true
+						end
 						torrent['title'] = i.title
 						torrent['genres'] = i.genres
 						torrent['rating'] = i.rating
@@ -139,34 +151,42 @@ class MoviesController < ApplicationController
 
 	# POST /video/new
 	def new
-		if params[:torrent]
-			torrent =  HTTParty.get(params[:torrent])
-			torrent = BEncode.load(torrent)
-			info_hash = torrent["info"].bencode
-			info_sha1 = OpenSSL::Digest::SHA1.digest(info_hash)
-			torrent = Base32.encode(info_sha1)
-			torrent = "magnet:?xt=urn:btih:" + torrent
+		if Movie.find_by(imdb: params[:imdb])
+			redirect_to movie_path(Movie.find_by(imdb: params[:imdb]).id)
 		else
-			torrent = params[:magnet_link]
-		end
-		movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche')
-		Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
-		begin
-			response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}&id=#{movie.id}")
-			if JSON.parse(response.body)['ok']
-			    movie.update(path: JSON.parse(response.body)['path'])
-			    redirect_to movie_path(id: movie.id)
+			if params[:torrent]
+				torrent =  HTTParty.get(params[:torrent])
+				torrent = BEncode.load(torrent)
+				info_hash = torrent["info"].bencode
+				info_sha1 = OpenSSL::Digest::SHA1.digest(info_hash)
+				torrent = Base32.encode(info_sha1)
+				torrent = "magnet:?xt=urn:btih:" + torrent
 			else
+				torrent = params[:magnet_link]
+			end
+			movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche')
+			Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
+			begin
+				response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}&id=#{movie.id}")
+				if JSON.parse(response.body)['ok']
+				    movie.update(path: JSON.parse(response.body)['path'])
+				    redirect_to movie_path(id: movie.id)
+				else
+					redirect_to root_path
+				end
+			rescue
+				movie.delete
+				FileUtils.remove_dir("#{Rails.root}/public/videos/#{movie.id}", true)
 				redirect_to root_path
 			end
-		rescue
-			FileUtils.remove_dir("#{Rails.root}/public/videos/#{movie.id}", true)
-			redirect_to root_path
 		end
 	end
 
 	def show
 		@video = Movie.find(params[:id])
+		if !View.find_by(movie: @video, user: current_user)
+			View.create(movie: @video, user: current_user)
+		end
 		i = Imdb::Movie.new(@video.imdb[2..-1])
 		@torrent = {}
 		@torrent['title'] = i.title
