@@ -7,7 +7,7 @@
 	<% if movie['torrents'] && movie['torrents'][1] %>
 		<% torrents = movie['torrents'][1] %>
 			<% if movie['title'] && movie['year'] && movie['rating'] && torrents['seeds'] && torrents['peers'] %>
-				<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s + ' Seeds : ' + torrents['seeds'].to_s + ' Peers : ' + torrents['peers'].to_s %></p>
+				<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
 			<% end %>
 	<% else %>
 		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
@@ -25,8 +25,10 @@
 	<% else %>
 		<%= form_tag("/movie/new", method: "post") do %>
 			<%= hidden_field_tag 'imdb', movie['imdb_code'] %>
-			<%= hidden_field_tag 'torrent', movie['torrents'][0]['url'] %>
-			<%= submit_tag("Voir le film") %>
+			<% if movie['torrents'] %>
+				<%= hidden_field_tag 'torrent', movie['torrents'][0]['url'] %>
+				<%= submit_tag("Voir le film") %>
+			<% end %>
 		<% end %>
 	<% end %>
 	<br>

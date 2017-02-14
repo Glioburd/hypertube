@@ -61,6 +61,12 @@ class MoviesController < ApplicationController
 				@limit = @result['data']['limit']
 				puts 'Limit : ' + @limit.to_s
 				@movies = @result['data']['movies']
+				@movies.each do |getimage|
+					response = HTTParty.get(getimage['medium_cover_image'])
+					if response.code != 200
+						getimage['medium_cover_image'] = view_context.image_path('notFound.png')
+					end
+				end
 				puts 'number of pages : ' + total_pages.to_s
 				puts 'minimum_rating : ' + @minimum_rating
 				puts 'sort_by : ' + @sort_by
@@ -92,15 +98,15 @@ class MoviesController < ApplicationController
 			begin
 				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
 				@result = JSON.parse(response.body)
-				@movies = []
+				@movies = @result['data']['movies']
 				@total_pages = 1
-				if @result['status'] == 'ok' && @result['status_message'] == 'Query was successful'
-					@result['data'].each do |data|
-						if data[0] == 'movies'
-							@movies = @movies + data[1]
-						end
+				@movies.each do |getimage|
+					response = HTTParty.get(getimage['medium_cover_image'])
+					if response.code != 200
+						getimage['medium_cover_image'] = view_context.image_path('notFound.png')
 					end
 				end
+				
 			rescue
 				@movies = []
 				@total_pages = 1

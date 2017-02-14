@@ -40,10 +40,8 @@
 	</div>
 </div>
 
-<input type="" id="currentPage" value="<%= @current_page %>" />
-<input type="" id="totalPages" value="<%= @total_pages %>" />
-<input type="" id="et" value="<%= @minimum_rating %>" />
-<input type="" id="te" value="<%= @sort_by %>" />
+<input type="hidden" id="currentPage" value="<%= @current_page %>" />
+<input type="hidden" id="totalPages" value="<%= @total_pages %>" />
 
 <% unless @current_page.to_i == @total_pages.to_i %>
 	<p id="view-more">
