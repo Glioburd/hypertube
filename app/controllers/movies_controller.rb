@@ -210,6 +210,8 @@ class MoviesController < ApplicationController
 	end
 
 	def total_pages
-		@total_pages = (@movies_count.to_f / @limit.to_f).ceil
+		# @total_pages = (@movies_count.to_f / @limit.to_f).ceil
+		@total_pages = (@movies_count / @limit) + ((@movies_count % @limit) ? 1 : 0)
+
 	end
 end

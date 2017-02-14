@@ -6,10 +6,9 @@
 <strong>BELONGS TO PAGE :</strong> <%= @current_page.to_s %>
 	<% if movie['torrents'] && movie['torrents'][1] %>
 		<% torrents = movie['torrents'][1] %>
-		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s + ' Seeds : ' + torrents['seeds'].to_s + ' Peers : ' + torrents['peers'].to_s %></p>
-
-		 
-
+			<% if movie['title'] && movie['year'] && movie['rating'] && torrents['seeds'] && torrents['peers'] %>
+				<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s + ' Seeds : ' + torrents['seeds'].to_s + ' Peers : ' + torrents['peers'].to_s %></p>
+			<% end %>
 	<% else %>
 		<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' + 'Note : ' + movie['rating'].to_s %></p>
 	<% end %>

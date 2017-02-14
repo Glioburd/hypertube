@@ -63,17 +63,4 @@ $ ->
   viewMore.find('a').click (e) ->
     nextPage()
     e.preventDefault()
-
-
-# $(document).ready(function() {
-#   if ($('#moviesGallery').length) {
-#     $(window).scroll(function() {
-#       var url = $('#moviesGallery .next_page').attr('href');
-#       if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {
-#         $('#moviesGallery').text("Please Wait...");
-#         return $.getScript(url);
-#       }
-#     });
-#     return $(window).scroll();
-#   }
-# });
+    
