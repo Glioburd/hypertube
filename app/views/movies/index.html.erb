@@ -4,9 +4,9 @@
 <div class="row" style="margin-bottom: 10px;">
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;">Quality</button>
+		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('quality') %></button>
 		<select name="quality" class="custom-select">
-			<option>All</option>
+			<option><%= t('all') %></option>
 			<option value="720p">720p</option>
 			<option value="1080p">1080p</option>
 		</select>
@@ -14,7 +14,7 @@
 		</div>
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;">Rating</button>
+		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('rating') %></button>
 		<select name="minimum_rating" class="custom-select">
 			<option value="9" <% if @minimum_rating == "9" %> selected <% end %> >9+</option>
 			<option value="8" <% if @minimum_rating == "8" %> selected <% end %> >8+</option>
@@ -30,21 +30,21 @@
 		</div>
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;">Sort by</button>
+		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('sort') %></button>
 		<select name="sort_by" class="custom-select">
-			<option <% if @sort_by == "date_added_lastest" %> selected <% end %> value="date_added_lastest" >Lastest added</option>
-			<option <% if @sort_by == "date_added_oldest" %> selected <% end %> value="date_added_oldest">Oldest added</option>
-			<option <% if @sort_by == "seeds" %> selected <% end %> value="seeds">Seeds</option>
-			<option <% if @sort_by == "peers" %> selected <% end %> value="peers">Peers</option>
-			<option <% if @sort_by == "year_lastest" %> selected <% end %> value="year_lastest">Lastest movies</option>
-			<option <% if @sort_by == "year_oldest" %> selected <% end %> value="year_oldest">Oldest movies</option>
-			<option <% if @sort_by == "rating" %> selected <% end %> value="rating">Rating</option>
-			<option <% if @sort_by == "title" %> selected <% end %> value="title">Title</option>
+			<option <% if @sort_by == "date_added_lastest" %> selected <% end %> value="date_added_lastest" ><%= t('latestadd') %></option>
+			<option <% if @sort_by == "date_added_oldest" %> selected <% end %> value="date_added_oldest"><%= t('oldestadd') %></option>
+			<option <% if @sort_by == "seeds" %> selected <% end %> value="seeds"><%= t('seeds') %></option>
+			<option <% if @sort_by == "peers" %> selected <% end %> value="peers"><%= t('peers') %></option>
+			<option <% if @sort_by == "year_lastest" %> selected <% end %> value="year_lastest"><%= t('latestmovies') %></option>
+			<option <% if @sort_by == "year_oldest" %> selected <% end %> value="year_oldest"><%= t('oldestmovies') %></option>
+			<option <% if @sort_by == "rating" %> selected <% end %> value="rating"><%= t('rating') %></option>
+			<option <% if @sort_by == "title" %> selected <% end %> value="title"><%= t('title') %></option>
 		</select>
 		</div>
 		</div>
 		<div class="col-xs-3">
-		<button class="btn btn-success" style="margin-left: 10px;">Submit</button>	
+		<button class="btn btn-success" style="margin-left: 10px;"><%= t('submit') %></button>	
 		</div>
 	</div>
 </form>
@@ -62,13 +62,3 @@
 		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by: params[:sort_by], quality: params[:quality]), class: 'btn btn-primary', remote: true) %>
 	</p>
 <% end %>
-
-<script type="text/javascripts" >
-	//var rating = $( "#minimum_rating option:selected" ).text();
-
-	//alert(rating);
-	// $("#minimum_rating").change(function(){
-	// 	$("#minimum_rating").selected = $(this).val()
-	// 	 alert('Selected value: ' + $(this).val());
-	// });
-</script>

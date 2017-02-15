@@ -13,7 +13,7 @@ class MoviesController < ApplicationController
 				puts 'current_page : ' + @current_page
 
 				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
-				@sort_by = params[:sort_by].nil? ? 'title' : params[:sort_by]
+				@sort_by = params[:sort_by].nil? ? 'year_lastest' : params[:sort_by]
 				puts 'params minimum_rating  : ' + @minimum_rating
 				puts 'params sort_by  : ' + @sort_by
 				puts 'SORT BY : ' + @sort_by
