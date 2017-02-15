@@ -10,13 +10,8 @@ class MoviesController < ApplicationController
 		if term.nil?
 			# @current_page = '1'
 			begin
-				puts 'current_page : ' + @current_page
-
 				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
-				@sort_by = params[:sort_by].nil? ? 'title' : params[:sort_by]
-				puts 'params minimum_rating  : ' + @minimum_rating
-				puts 'params sort_by  : ' + @sort_by
-				puts 'SORT BY : ' + @sort_by
+				@sort_by = params[:sort_by].nil? ? 'year_lastest' : params[:sort_by]
 				with_images = 'true'
 				case @sort_by
 					when 'date_added_lastest'
@@ -60,9 +55,7 @@ class MoviesController < ApplicationController
 				# end
 
 				@movies_count = @result['data']['movie_count']
-				puts 'Movie count : ' + @movies_count.to_s
 				@limit = @result['data']['limit']
-				puts 'Limit : ' + @limit.to_s
 				@movies = @result['data']['movies']
 				@movies.each do |getimage|
 					response = HTTParty.get(getimage['medium_cover_image'])
@@ -73,11 +66,7 @@ class MoviesController < ApplicationController
 						getimage['view'] = true
 					end
 				end
-				puts 'number of pages : ' + total_pages.to_s
-				puts 'minimum_rating : ' + @minimum_rating
-				puts 'sort_by : ' + @sort_by
-				puts 'sort_by (toto): ' + toto
-				puts 'order_by : ' + order_by
+				total_pages
 				# puts response
 
 			rescue
