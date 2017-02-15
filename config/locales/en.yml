@@ -53,3 +53,6 @@ en:
   size: "Size"
   kind: "Kind"
   description: "Description"
+  visit: "Show Profil"
+  name: "Nom"
+  profilpictures: "Profil pictures"

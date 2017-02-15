@@ -34,3 +34,6 @@ fr:
   size: "Taille"
   kind: "Genre"
   description: "Description"
+  visit: "Show Profil"
+  name: "Nom"
+  profilpictures: "Profil pictures"
