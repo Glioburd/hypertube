@@ -1,14 +1,20 @@
 <% query = params[:term] %><br>
 <% $increment = 0 %>
-<form method="get" action="<% link_to movies_path %>">
-	<div class="select-container">
-		<p>Quality</p>
+<form method="get" action="<% link_to movies_path %>" class="form-inline">
+<div class="row" style="margin-bottom: 10px;">
+		<div class="col-xs-3">
+    	<div class="form-group">
+		<button class="btn btn-primary" disabled style="margin-left: 10px;">Quality</button>
 		<select name="quality" class="custom-select">
 			<option>All</option>
 			<option value="720p">720p</option>
 			<option value="1080p">1080p</option>
 		</select>
-		<p>Rating</p>
+		</div>
+		</div>
+		<div class="col-xs-3">
+    	<div class="form-group">
+		<button class="btn btn-primary" disabled style="margin-left: 10px;">Rating</button>
 		<select name="minimum_rating" class="custom-select">
 			<option value="9" <% if @minimum_rating == "9" %> selected <% end %> >9+</option>
 			<option value="8" <% if @minimum_rating == "8" %> selected <% end %> >8+</option>
@@ -20,7 +26,11 @@
 			<option value="2" <% if @minimum_rating == "2" %> selected <% end %> >2+</option>
 			<option value="1" <% if @minimum_rating == "1" %> selected <% end %> >1+</option>
 		</select>
-		<p>Sort by</p>
+		</div>
+		</div>
+		<div class="col-xs-3">
+    	<div class="form-group">
+		<button class="btn btn-primary" disabled style="margin-left: 10px;">Sort by</button>
 		<select name="sort_by" class="custom-select">
 			<option <% if @sort_by == "date_added_lastest" %> selected <% end %> value="date_added_lastest" >Lastest added</option>
 			<option <% if @sort_by == "date_added_oldest" %> selected <% end %> value="date_added_oldest">Oldest added</option>
@@ -31,7 +41,11 @@
 			<option <% if @sort_by == "rating" %> selected <% end %> value="rating">Rating</option>
 			<option <% if @sort_by == "title" %> selected <% end %> value="title">Title</option>
 		</select>
-		<button class="btn btn-primary">Submit</button>
+		</div>
+		</div>
+		<div class="col-xs-3">
+		<button class="btn btn-success" style="margin-left: 10px;">Submit</button>	
+		</div>
 	</div>
 </form>
 <div class="container" id="moviesGallery">
