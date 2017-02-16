@@ -142,7 +142,7 @@ class MoviesController < ApplicationController
 
 	# POST /video/new
 	def new
-		if Movie.find_by(imdb: params[:imdb])
+		if Movie.find_by(imdb: params[:imdb], quality: params[:quality])
 			redirect_to movie_path(Movie.find_by(imdb: params[:imdb]).id)
 		else
 			if params[:torrent]
@@ -155,7 +155,7 @@ class MoviesController < ApplicationController
 			else
 				torrent = params[:magnet_link]
 			end
-			movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche')
+			movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche', quality: params[:quality])
 			Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
 			begin
 				response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}&id=#{movie.id}")
@@ -175,9 +175,7 @@ class MoviesController < ApplicationController
 
 	def show
 		@video = Movie.find(params[:id])
-		if !View.find_by(movie: @video, user: current_user)
-			View.create(movie: @video, user: current_user)
-		end
+		View.create(movie: @video, user: current_user)
 		i = Imdb::Movie.new(@video.imdb[2..-1])
 		@torrent = {}
 		@torrent['title'] = i.title
