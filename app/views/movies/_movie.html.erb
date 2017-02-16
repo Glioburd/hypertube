@@ -65,7 +65,6 @@
 	          <h4 class="modal-title"><%= movie['title'] %></h4>
 	        </div>
 	        <div class="modal-body">
-	        	<%= movie['torrents'].to_json %>
 	          <p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail" style="min-height: 299px; max-height: 336px;"></p>
 	          <p><strong><%= t('year') %> : </strong><%= movie['year'].to_s %></p>
 	          <p><strong><%= t('rating') %> : </strong><%= movie['rating'].to_s %></p>
