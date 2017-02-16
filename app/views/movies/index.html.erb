@@ -1,10 +1,11 @@
 <% query = params[:term] %><br>
 <% $increment = 0 %>
+<% if query.nil? %>
 <form method="get" action="<% link_to movies_path %>" class="form-inline">
 <div class="row" style="margin-bottom: 10px;">
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('quality') %></button>
+		<button class="btn btn-primary" disabled style="margin-left: 14px;"><%= t('quality') %></button>
 		<select name="quality" class="custom-select">
 			<option><%= t('all') %></option>
 			<option value="720p">720p</option>
@@ -14,7 +15,7 @@
 		</div>
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('rating') %></button>
+		<button class="btn btn-primary" disabled style="margin-left: 14px;"><%= t('rating') %></button>
 		<select name="minimum_rating" class="custom-select">
 			<option value="9" <% if @minimum_rating == "9" %> selected <% end %> >9+</option>
 			<option value="8" <% if @minimum_rating == "8" %> selected <% end %> >8+</option>
@@ -30,7 +31,7 @@
 		</div>
 		<div class="col-xs-3">
     	<div class="form-group">
-		<button class="btn btn-primary" disabled style="margin-left: 10px;"><%= t('sort') %></button>
+		<button class="btn btn-primary" disabled style="margin-left: 14px;"><%= t('sort') %></button>
 		<select name="sort_by" class="custom-select">
 			<option <% if @sort_by == "date_added_lastest" %> selected <% end %> value="date_added_lastest" ><%= t('latestadd') %></option>
 			<option <% if @sort_by == "date_added_oldest" %> selected <% end %> value="date_added_oldest"><%= t('oldestadd') %></option>
@@ -44,13 +45,25 @@
 		</div>
 		</div>
 		<div class="col-xs-3">
-		<button class="btn btn-success" style="margin-left: 10px;"><%= t('submit') %></button>	
+		<button class="btn btn-success"><%= t('submit') %></button>	
 		</div>
 	</div>
 </form>
+<% end %>
+<div style="margin-bottom: 10px;">
+<%= form_tag(movies_path, method: :get, class: "form-inline") do %>
+	<button class="btn btn-primary" disabled><%= t('movies') %></button>
+	<%= text_field_tag :term, nil, class: "form-control" %>
+	<%= submit_tag t('search'), class: "btn btn-success" %>
+<% end %>
+</div>
 <div class="container" id="moviesGallery">
 	<div class="row" id="content">
-		<%= render partial: 'movie', collection: @movies %>
+		<% if @movies.empty?%>
+			<h1>No results ...</h1>
+		<% else %>
+			<%= render partial: 'movie', collection: @movies %>
+		<% end %>
 	</div>
 </div>
 
