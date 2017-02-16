@@ -1,6 +1,6 @@
 <% if movie %>
 	<%#= movie['torrents'] %>
-	<% if movie['torrents'] && movie['torrents'][2]%>
+	<% if movie['torrents'] && movie['torrents'][2] %>
 		<% if @quality == "720p" %>
 	    	<% qualitymovies = 1 %>
 		<% else %>
@@ -46,7 +46,8 @@
 			<%= form_tag("/movie/new", method: "post") do %>
 				<%= hidden_field_tag 'imdb', movie['imdb_code'] %>
 				<% if movie['torrents'] %>
-					<%= hidden_field_tag 'torrent', movie['torrents'][0]['url'] %>
+					<%= hidden_field_tag 'torrent', movie['torrents'][qualitymovies]['url'] %>
+					<%= hidden_field_tag 'quality', @quality %>
 					<%= submit_tag(t("watchmovie")) %>
 				<% end %>
 			<% end %>
