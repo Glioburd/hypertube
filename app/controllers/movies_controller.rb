@@ -93,6 +93,7 @@ class MoviesController < ApplicationController
 			begin
 				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
 				@result = JSON.parse(response.body)
+				puts @result
 				@movies = @result['data']['movies']
 				@total_pages = 1
 				@movies.each do |getimage|

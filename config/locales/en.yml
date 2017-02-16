@@ -56,3 +56,7 @@ en:
   visit: "Show Profil"
   name: "Nom"
   profilpictures: "Profil pictures"
+  A_movie_by: "A mobie by"
+  from: "from"
+  two_words_connector: "and"
+  last_word_connector: "and"
