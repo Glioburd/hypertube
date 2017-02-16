@@ -9,12 +9,18 @@
 	<% end %>
 </video>
 
+</br>
+</br>
+</video><button type="button" class="btn btn-secondary">
+		<a href="#" class="thumbnail" data-toggle="modal" data-target="#info">
+			<%= t('showinformation')%>
+		</a>
+		</button>
+</br>
+</br>
+</br>
+</br>
 <table>
-
-<%#= @torrent.inspect %>
-
-<p><%= t('a_movie_by') %> <strong><%= @torrent['writers'].to_sentence(last_word_connector: t('last_word_connector')) %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
-<p><strong><%= t('starring') %>:</strong> <%= @torrent['cast_members'].to_sentence(last_word_connector: t('last_word_connector')) %>.</p>
 
 <h2><%= t('comments') %></h2>
 
@@ -46,6 +52,35 @@
 		<%= f.submit t("comment_button"), class: 'btn btn-default' %>
 	<% end %>
 </div>
+		<div class="modal fade" id="info" role="dialog">
+	    <div class="modal-dialog" style="min-width: 80%;">
+	    <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title"><%=  @torrent['title'] %></h4>
+	        </div>
+	        <div class="modal-body">
+	          <p><img src="<%=  @torrent['medium_cover_image'] %>" class="img-thumbnail" style="min-height: 299px; max-height: 336px;"></p>
+	          <p><strong><%= t('year') %> : </strong><%=  @torrent['year'].to_s %></p>
+	          <p><strong><%= t('rating') %> : </strong><%=  @torrent['rating'].to_s %></p>
+	          <p><%= t('a_movie_by') %> <strong><%= @torrent['writers'].to_sentence(last_word_connector: t('last_word_connector')) %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
+				<p><strong><%= t('starring') %>:</strong> <%= @torrent['cast_members'].to_sentence(last_word_connector: t('last_word_connector')) %>.</p>
+	          <%# if movie['runtime'] %>
+	          	<%# runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
+	          	<!-- <p><strong><%#= t('duration') %> : </strong><%#= runtime.to_s %></p> -->
+	          <%# end %>
+	          <% if  @torrent['genres'] %>
+	         	 	<p><strong><%= t('kind') %> : </strong><%=  @torrent['genres'].to_sentence %></p>
+	          <% end %>
+	          <p><strong><%= t('description') %> : </strong><%=  @torrent['description_full'] %></p>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+	      </div>
+	    </div>
+	    </div>
 <script src="http://vjs.zencdn.net/5.16.0/video.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.2.1/videojs-contrib-hls.js"></script>
 <script>

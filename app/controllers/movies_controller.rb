@@ -150,8 +150,9 @@ class MoviesController < ApplicationController
 	end
 
 	def show
-		@video = Movie.find(params[:id])
-		if @video
+		@video = Movie.where(id: params[:id])
+		if @video[0]
+			@video = @video[0]
 			View.create(movie: @video, user: current_user)
 			i = Imdb::Movie.new(@video.imdb[2..-1])
 			@torrent = {}
