@@ -8,7 +8,6 @@ class MoviesController < ApplicationController
 		@user = current_user.id
 		term = params[:term]
 		if term.nil?
-			# @current_page = '1'
 			begin
 				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
 				@sort_by = params[:sort_by].nil? ? 'year_lastest' : params[:sort_by]
@@ -46,15 +45,7 @@ class MoviesController < ApplicationController
 				limit = '50'
 				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?page='+@current_page+'&minimum_rating='+@minimum_rating+'&sort_by='+toto+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&quality='+@quality)
 				json = response.body
-				# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20 
 				@result = JSON.parse(json)
-
-				# puts @result
-				# puts @result['data']['movies'].each do ||
-				# @result['data']['movies'].each do |info|
-				# 	puts info
-				# end
-
 				@movies_count = @result['data']['movie_count']
 				@limit = @result['data']['limit']
 				@movies = @result['data']['movies']
@@ -74,22 +65,6 @@ class MoviesController < ApplicationController
 				@movies = []
 				@total_pages = 1
 			end
-			# @cover = @result['data']['medium_cover_image']
-			# puts 'cover : ' + @cover
-			# @title = @result['data']['title']
-			# puts 'title : ' + @title
-			# @year = @result['data']['year']
-			# puts 'year : ' + @year.to_s
-			# puts @movies.each
-			# 	puts '******************************'
-			# 	puts info
-			# 	puts '******************************'
-
-			# 	if info[0] == 'movies'
-			# 		# puts '***' + info[1] + '***'
-			# 	end
-			# end
-			# @movies = @result['data']['movies']['title']
 		else
 			begin
 				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?query_term=' + params[:term] + '&sort_by=title&order_by=asc' + '&page='+@current_page)
@@ -175,43 +150,47 @@ class MoviesController < ApplicationController
 
 	def show
 		@video = Movie.find(params[:id])
-		View.create(movie: @video, user: current_user)
-		i = Imdb::Movie.new(@video.imdb[2..-1])
-		@torrent = {}
-		@torrent['title'] = i.title
-		@torrent['genres'] = i.genres
-		@torrent['rating'] = i.rating
-		@torrent['year'] = i.year
-		@torrent['description_full'] = i.plot_summary
-		@torrent['medium_cover_image'] = i.poster
-		@torrent['cast_members'] = i.cast_members
-		@torrent['production'] = i.director
-		@torrent['writers'] = i.writers
-		@torrent['time'] = i.length.to_s + ' minutes'
-	    if @video
-	      if @video.translates.empty?
-	        path = @video.path[0..-1]
-	        begin
-		        file = Subdb::Video.new("public/videos/#{@video.id}/" + path)
-		        file_in_folder = path.split('/')[-1].split('.')[0]
-		        trads = file.search
-		        if trads
-		          trads = trads.split(',')
-		          trads.each do |trad|
-		            text = file.download([trad])
-		            File.open(File.join("public/videos/#{@video.id}/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
-		              f.write(text.force_encoding("UTF-8"))
-		              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, movie: @video)
-		            end
-		          end
-		        end
-		    rescue
+		if @video
+			View.create(movie: @video, user: current_user)
+			i = Imdb::Movie.new(@video.imdb[2..-1])
+			@torrent = {}
+			@torrent['title'] = i.title
+			@torrent['genres'] = i.genres
+			@torrent['rating'] = i.rating
+			@torrent['year'] = i.year
+			@torrent['description_full'] = i.plot_summary
+			@torrent['medium_cover_image'] = i.poster
+			@torrent['cast_members'] = i.cast_members
+			@torrent['production'] = i.director
+			@torrent['writers'] = i.writers
+			@torrent['time'] = i.length.to_s + ' minutes'
+		    if @video
+		      if @video.translates.empty?
+		        path = @video.path[0..-1]
+		        begin
+			        file = Subdb::Video.new("public/videos/#{@video.id}/" + path)
+			        file_in_folder = path.split('/')[-1].split('.')[0]
+			        trads = file.search
+			        if trads
+			          trads = trads.split(',')
+			          trads.each do |trad|
+			            text = file.download([trad])
+			            File.open(File.join("public/videos/#{@video.id}/", file_in_folder + '-' + trad + '.srt'), 'w+') do |f|
+			              f.write(text.force_encoding("UTF-8"))
+			              Translate.create(path: file_in_folder + '-' + trad + '.srt', label: trad, movie: @video)
+			            end
+			          end
+			        end
+			    rescue
+			    end
+		      end
+		      @translates = @video.translates
+		    else
+		      redirect_to root_path
 		    end
-	      end
-	      @translates = @video.translates
-	    else
-	      redirect_to root_path
-	    end
+		else
+			redirect_to root_path
+		end
 	end
 	
 	private
