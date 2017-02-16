@@ -3,6 +3,7 @@ $ ->
   if $('#moviesGallery').length > 0
     content = $('#content')
     viewMore = $('#view-more')
+    load = $('#load')
     currentPage = $('#currentPage').val()
     totalPages = $('#totalPages').val()
 
@@ -33,7 +34,7 @@ $ ->
 
       return if isLoadingNextPage || !url
 
-      viewMore.addClass('fa fa-circle-o-notch fa-spin')
+      load.addClass('fa fa-circle-o-notch fa-spin')
       isLoadingNextPage = true
       lastLoadAt = new Date()
 
@@ -42,7 +43,7 @@ $ ->
         method: 'GET',
         dataType: 'script',
         success: ->
-          viewMore.removeClass('fa fa-circle-o-notch fa-spin')
+          load.removeClass('fa fa-circle-o-notch fa-spin')
           isLoadingNextPage = false
           lastLoadAt = new Date()
       })

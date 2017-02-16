@@ -71,6 +71,7 @@
 
 <% unless @current_page.to_i == @total_pages.to_i %>
 	<p id="view-more">
-		<%= link_to('View More', url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by: params[:sort_by], quality: params[:quality]), class: 'btn btn-primary', remote: true) %>
+		<%= link_to(t('viewmore'), url_for(page: @current_page.to_i + 1, minimum_rating: params[:minimum_rating], sort_by: params[:sort_by], quality: params[:quality]), class: 'btn btn-primary', remote: true) %>
+		<i id="load"></i>
 	</p>
 <% end %>
