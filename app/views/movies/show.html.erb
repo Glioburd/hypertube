@@ -1,14 +1,14 @@
 <link href="http://vjs.zencdn.net/5.16.0/video-js.css" rel="stylesheet">
 
 <h1 style="text-align: center;"><%= @torrent['title'] %></h1>
-
-<video class="video-js vjs-default-skin" id="video" width="800" height="500" controls>
-<source src="/videos/<%= @video.id %>/playlist.m3u8" type="application/x-mpegURL">
-	<% @translates.each do |translate| %>
-		<track src="/videos/<%= @video.id %>/<%= translate.path %>" kind="subtitles" srclang="<%= translate.label %>" label="<%= translate.label %>">
-	<% end %>
-</video>
-
+<div class="video_content">
+	<video class="video-js vjs-default-skin mejs__player" id="video" controls>
+		<source src="/videos/<%= @video.id %>/playlist.m3u8" type="application/x-mpegURL">
+		<% @translates.each do |translate| %>
+			<track src="/videos/<%= @video.id %>/<%= translate.path %>" kind="subtitles" srclang="<%= translate.label %>" label="<%= translate.label %>">
+		<% end %>
+	</video>
+</div>
 </br>
 </br>
 </video><button type="button" class="btn btn-secondary">

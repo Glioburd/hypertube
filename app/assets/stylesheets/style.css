@@ -69,3 +69,8 @@ code {
 	margin-top: 5px;
 	margin-bottom: 5px;
 }
+.video_content {
+	max-width: 896px;
+	max-height: 504px;
+	margin: 0 auto;
+}
