@@ -13,8 +13,8 @@
 
 <%#= @torrent.inspect %>
 
-<p><%= t('A_movie_by') %> <strong><%= @torrent['writers'].to_sentence %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
-<p>Starring <%= @torrent['cast_members'].to_sentence %>.</p>
+<p><%= t('A_movie_by') %> <strong><%= @torrent['writers'].to_sentence(last_word_connector: t('last_word_connector')) %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
+<p>Starring <%= @torrent['cast_members'].to_sentence(last_word_connector: t('last_word_connector')) %>.</p>
 
 <h2>Commentaires:</h2>
 
