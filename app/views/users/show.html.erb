@@ -11,7 +11,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">Name:</h3>
+		<h3 class="panel-title"><%= t('name')%>:</h3>
 	</div>
 	<div class="panel-body">
 		<%= @user.firstname %> <%= @user.name %>
@@ -21,7 +21,7 @@
 
 <div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">Photo de profil :</h3>
+			<h3 class="panel-title"><%= t('profilpictures') %> :</h3>
 		</div>
 		<div class="panel-body">
 			<div class="row">
@@ -35,7 +35,7 @@
 						<% src = @user.imageOauthUrl %>
 						<% alt = 'avatar_Oauth' %>
 					<% end %>
-					<img src="<%= src %>" alt="<%= alt %>">
+					<img src="<%= src %>" alt="<%= alt %>" style="margin-left: 14px;">
 					</a>
 				</div>
 			</div>

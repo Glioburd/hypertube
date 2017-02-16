@@ -13,10 +13,10 @@
 
 <%#= @torrent.inspect %>
 
-<p><%= t('A_movie_by') %> <strong><%= @torrent['writers'].to_sentence(last_word_connector: t('last_word_connector')) %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
-<p>Starring <%= @torrent['cast_members'].to_sentence(last_word_connector: t('last_word_connector')) %>.</p>
+<p><%= t('a_movie_by') %> <strong><%= @torrent['writers'].to_sentence(last_word_connector: t('last_word_connector')) %></strong> <%= t('from') %> <%= @torrent['year'] %>.</p>
+<p><strong><%= t('starring') %>:</strong> <%= @torrent['cast_members'].to_sentence(last_word_connector: t('last_word_connector')) %>.</p>
 
-<h2>Commentaires:</h2>
+<h2><%= t('comments') %></h2>
 
 <ul class ="list-unstyled" id="body_comment">
 	<% @video.comments.each do |comment| %>
@@ -42,8 +42,8 @@
 <div id="new_comment">
 	<%= form_for(:comment, :url => new_comment_path(format: :json), remote: true) do |f| %>
 		<%= f.hidden_field :id, value: @video.id %>
-		<%= f.text_area :content, placeholder: 'Votre commentaire ici', class: 'form-control text' %>
-		<%= f.submit :Commenter, class: 'btn btn-default' %>
+		<%= f.text_area :content, placeholder: t('comments_placeholder'), class: 'form-control text' %>
+		<%= f.submit t('comment_button'), class: 'btn btn-default' %>
 	<% end %>
 </div>
 <script src="http://vjs.zencdn.net/5.16.0/video.js"></script>
