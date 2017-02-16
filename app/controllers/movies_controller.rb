@@ -119,19 +119,19 @@ class MoviesController < ApplicationController
 		if Movie.find_by(imdb: params[:imdb], quality: params[:quality])
 			redirect_to movie_path(Movie.find_by(imdb: params[:imdb]).id)
 		else
-			if params[:torrent]
-				torrent =  HTTParty.get(params[:torrent])
-				torrent = BEncode.load(torrent)
-				info_hash = torrent["info"].bencode
-				info_sha1 = OpenSSL::Digest::SHA1.digest(info_hash)
-				torrent = Base32.encode(info_sha1)
-				torrent = "magnet:?xt=urn:btih:" + torrent
-			else
-				torrent = params[:magnet_link]
-			end
-			movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche', quality: params[:quality])
-			Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
 			begin
+				if params[:torrent]
+					torrent =  HTTParty.get(params[:torrent])
+					torrent = BEncode.load(torrent)
+					info_hash = torrent["info"].bencode
+					info_sha1 = OpenSSL::Digest::SHA1.digest(info_hash)
+					torrent = Base32.encode(info_sha1)
+					torrent = "magnet:?xt=urn:btih:" + torrent
+				else
+					torrent = params[:magnet_link]
+				end
+				movie = Movie.create(imdb: params[:imdb], description: 'Pirate_bay recherche', quality: params[:quality])
+				Dir.mkdir "#{Rails.root}/public/videos/#{movie.id}"
 				response = HTTParty.get("http://localhost:3001/download?magnet=#{torrent}&id=#{movie.id}")
 				if JSON.parse(response.body)['ok']
 				    movie.update(path: JSON.parse(response.body)['path'])
@@ -140,8 +140,10 @@ class MoviesController < ApplicationController
 					redirect_to root_path
 				end
 			rescue
-				movie.delete
-				FileUtils.remove_dir("#{Rails.root}/public/videos/#{movie.id}", true)
+				if movie
+					movie.delete
+					FileUtils.remove_dir("#{Rails.root}/public/videos/#{movie.id}", true)
+				end
 				redirect_to root_path
 			end
 		end
