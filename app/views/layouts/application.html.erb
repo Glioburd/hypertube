@@ -33,9 +33,9 @@
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= current_user.login %></a>
 								<div class="dropdown-menu" aria-labelledby="dropdown01">
-									<a class="dropdown-item" href="#">Profile</a>
-									<a class="dropdown-item" href="#">Paramètres</a>
-									<%= link_to :Deconnexion, destroy_user_session_path, method: :delete %>
+									<%= link_to(t('profile'), userprofil_path(current_user.login), class: 'dropdown-item') %>
+									<%= link_to(t('settings'), edit_user_registration_path, class: 'dropdown-item') %>
+									<%= link_to t('logout'), destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
 								</div>
 							</li>
 						</ul>
