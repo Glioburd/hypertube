@@ -7,9 +7,8 @@
     	<div class="form-group">
 		<button class="btn btn-primary" disabled style="margin-left: 14px;"><%= t('quality') %></button>
 		<select name="quality" class="custom-select">
-			<option><%= t('all') %></option>
-			<option value="720p">720p</option>
-			<option value="1080p">1080p</option>
+			<option value="720p" <% if @quality == "720p" %> selected <%end%> >720p</option>
+			<option value="1080p" <% if @quality == "1080p" %> selected <%end%> >1080p</option>
 		</select>
 		</div>
 		</div>

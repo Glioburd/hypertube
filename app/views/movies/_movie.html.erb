@@ -1,4 +1,18 @@
 <% if movie %>
+	<%#= movie['torrents'] %>
+	<% if movie['torrents'][2]%>
+		<% if @quality == "720p" %>
+	    	<% qualitymovies = 1 %>
+		<% else %>
+			<% qualitymovies = 2 %>
+		<% end %>
+	<% else %>
+		<% if @quality == "720p" %>
+	    	<% qualitymovies = 0 %>
+		<% else %>
+			<% qualitymovies = 1 %>
+		<% end %>
+	<% end %>
 	<div class="col-xs-6 col-md-3">
 		<% myModal = 'myModal' + $increment.to_s %>
 		<a href="#" class="thumbnail" data-toggle="modal" data-target="#<%= myModal %>">
@@ -7,8 +21,8 @@
 		<% if movie['view'] %>
 			<div style="color: green;">Déjà vu</div>
 		<% end %>
-		<% if movie['torrents'] && movie['torrents'][1] %>
-			<% torrents = movie['torrents'][1] %>
+		<% if movie['torrents'] && movie['torrents'][qualitymovies] %>
+			<% torrents = movie['torrents'][qualitymovies] %>
 			<% if movie['title'] && movie['year'] && movie['rating'] && torrents['seeds'] && torrents['peers'] %>
 				<p><%= movie['title'] + ' (' + movie['year'].to_s + ')' %></p>
 				<p><%= t('ratingimdb') + ' : ' + movie['rating'].to_s %></p>
@@ -26,14 +40,14 @@
 					end %>
 				<%= hidden_field_tag 'imdb', movie['imdb'] %>
 				<%= select_tag(:magnet_link, options_for_select(languages)) %>
-				<%= submit_tag("Voir le film") %>
+				<%= submit_tag(t("watchmovie")) %>
 			<% end %>
 		<% else %>
 			<%= form_tag("/movie/new", method: "post") do %>
 				<%= hidden_field_tag 'imdb', movie['imdb_code'] %>
 				<% if movie['torrents'] %>
 					<%= hidden_field_tag 'torrent', movie['torrents'][0]['url'] %>
-					<%= submit_tag("Voir le film") %>
+					<%= submit_tag(t("watchmovie")) %>
 				<% end %>
 			<% end %>
 		<% end %>
@@ -54,8 +68,8 @@
 	          	<% runtime = Time.at(movie['runtime'] * 60).utc.strftime("%-lh%M") %>
 	          	<p><strong><%= t('duration') %> : </strong><%= runtime.to_s %></p>
 	          <% end %>
-	          <% if movie['torrents'] && movie['torrents'][1] %>
-		          <% torrents = movie['torrents'][1] %>
+	          	<% if movie['torrents'] && movie['torrents'][qualitymovies] %>
+		          <% torrents = movie['torrents'][qualitymovies] %>
 		          <p><strong style="color: green;">Seeds : </strong><%= torrents['seeds'].to_s %></p>
 		          <p><strong style="color: red;">Peers : </strong><%= torrents['peers'].to_s %></p>
 		          <p><strong><%= t('size') %> : </strong><%= torrents['size'].to_s %></p>

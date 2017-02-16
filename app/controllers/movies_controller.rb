@@ -12,6 +12,7 @@ class MoviesController < ApplicationController
 			begin
 				@minimum_rating = params[:minimum_rating].nil? ? '8' : params[:minimum_rating]
 				@sort_by = params[:sort_by].nil? ? 'year_lastest' : params[:sort_by]
+				@quality = params[:quality].nil? ? '1080p' : params[:quality]
 				with_images = 'true'
 				case @sort_by
 					when 'date_added_lastest'
@@ -43,7 +44,7 @@ class MoviesController < ApplicationController
 				end
 				order_by = order_by.nil? ? 'asc' : order_by
 				limit = '50'
-				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?page='+@current_page+'&minimum_rating='+@minimum_rating+'&sort_by='+toto+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&quality:1080p')
+				response = HTTParty.get('https://yts.ag/api/v2/list_movies.json?page='+@current_page+'&minimum_rating='+@minimum_rating+'&sort_by='+toto+'&with_images='+with_images+'&order_by='+order_by+'&limit='+limit+'&quality='+@quality)
 				json = response.body
 				# @results = json.paginate :current_page => params[:current_page], :per_current_page => 20 
 				@result = JSON.parse(json)
