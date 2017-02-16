@@ -53,7 +53,7 @@
 <div style="margin-bottom: 10px;">
 <%= form_tag(movies_path, method: :get, class: "form-inline") do %>
 	<button class="btn btn-primary" disabled><%= t('movies') %></button>
-	<%= text_field_tag :term, nil, class: "form-control" %>
+	<%= text_field_tag :term, nil, class: "form-control", style: "width: 25%;" %>
 	<%= submit_tag t('search'), class: "btn btn-success" %>
 <% end %>
 </div>
