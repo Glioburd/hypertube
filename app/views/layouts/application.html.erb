@@ -44,10 +44,6 @@
 					<%= submit_tag t('search'), class: "btn btn-outline-success my-2 my-sm-0" %>
 				<% end %>
 			<% end %>
-<!-- 				<form class="form-inline my-2 my-lg-0" method="get" action="<#%= url_for(controller: 'movies', action: 'index') %>">
-					<input class= type="text" placeholder="Chercher un film">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-				</form> -->
 			</div>
 		</nav>
 		<div class="container" style="padding-top: 5rem;">
@@ -56,5 +52,7 @@
 			<% end %>
 			<%= yield %>
 		</div>
+		<%= render 'layouts/footer' %>
 	</body>
+
 </html>
