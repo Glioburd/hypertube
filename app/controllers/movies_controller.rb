@@ -112,7 +112,6 @@ class MoviesController < ApplicationController
 				end
 			end
 		end
-		 # @movies = Post.paginate(:current_page => params[:current_page], :per_current_page => 20)
 	end
 
 	# POST /video/new
@@ -204,8 +203,6 @@ class MoviesController < ApplicationController
 	end
 
 	def total_pages
-		# @total_pages = (@movies_count.to_f / @limit.to_f).ceil
 		@total_pages = (@movies_count / @limit) + ((@movies_count % @limit) ? 1 : 0)
-
 	end
 end
