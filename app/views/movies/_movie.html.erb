@@ -19,7 +19,7 @@
 			<p><img src="<%= movie['medium_cover_image'] %>" class="img-thumbnail" style="min-height: 299px; max-height: 336px;"></p>
 		</a>
 		<% if movie['view'] %>
-			<div style="color: green;">Déjà vu</div>
+			<div style="color: green;"><%= t('dejavu')%></div>
 		<% end %>
 		<% if movie['torrents'] && movie['torrents'][qualitymovies] %>
 			<% torrents = movie['torrents'][qualitymovies] %>
