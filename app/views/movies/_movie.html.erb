@@ -1,6 +1,6 @@
 <% if movie %>
 	<%#= movie['torrents'] %>
-	<% if movie['torrents'][2]%>
+	<% if movie['torrents'] && movie['torrents'][2]%>
 		<% if @quality == "720p" %>
 	    	<% qualitymovies = 1 %>
 		<% else %>
